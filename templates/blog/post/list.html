@@ -1,0 +1,37 @@
+{% extends 'blog/post/base.html' %}
+{% load static %}
+
+{% block link %}
+    <link rel="stylesheet" href="{% static 'css/posts.css' %}">
+{% endblock %}
+
+{% block title %}My Blog{% endblock %}
+
+{% block content %}
+    <div class="posts-container">
+        <div class="posts xy-center">
+            {% if posts %}
+                {% for post in posts %}
+                    <a href="{{ post.get_absolute_url }}" class="post shadow">
+                        <img src="{{ post.image.url }}" alt="">
+                        <div class="content">
+                            <h2>
+                                {{ post.title }}
+                            </h2>
+                            <p style="margin-bottom: 5px;" class="date">Published <em>{{ post.publish }}</em> by <strong>{{ post.author }}</strong></p>
+                            {{ post.body | truncatewords:15|linebreaks }}
+                        </div>
+                        <p style="margin-right: 0.8rem;">{{ post.views }}</p> <i class="fa fa-eye"></i>
+                        <p class="post-end">
+                            <i style="margin-left: 2rem;" class="far fa-bookmark"></i>
+                            <span class="read-time">15min</span>
+                        </p>
+                    </a>
+                {% endfor %}
+            {% else %}
+                <p>No posts available</p>
+            {% endif %}
+        </div>
+    </div>
+    {% include 'blog/post/paginator.html' with page=posts %}
+{% endblock %}

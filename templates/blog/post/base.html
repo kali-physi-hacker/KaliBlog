@@ -1,0 +1,47 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'css/base.css' %}">
+    <link rel="stylesheet" href="{% static 'fontawesome-free/css/all.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/universal.css' %}">
+    {% block link %}{% endblock %}
+    <title>POSTS</title>
+</head>
+<body>
+    <header class="base-header shadow">
+        <div class="brand">
+            <a href="#" class="brand-name">Kali Blog</a>
+            <p class="sub-brand">A blog for scientist</p>
+        </div>
+        <nav class="top-nav">
+            <ul>
+                <li><a href="void();" class="close">&times;</a></li>
+                <li><a class="shadow" href="{% url 'home' %}">HOME</a></li>
+                <li><a class="active shadow" href="#">POSTS</a></li>
+                <li><a class="shadow" href="#">NEWS</a></li>
+                <li><a class="shadow" href="#">ABOUT</a></li>
+            </ul>
+        </nav>
+    </header>
+    <section class="main-content">
+        {% block content %}{% endblock %}
+    </section>
+    <footer class="shadow">
+        <p>Copyright &copy; 2020 Kali Association of Developers</p>
+        <div class="social">
+            <a class="bg-dark" href="#"><i class="fab fa-facebook-f text-blue"></i></a>
+            <a class="bg-dark" href="#"><i class="fab fa-google text-red"></i></a>
+            <a class="bg-dark" href="#"><i class="fab fa-twitter text-blue"></i></a>
+            <a class="bg-dark" href="#"><i class="fab fa-linkedin-in text-blue"></i></a>
+            <a class="bg-dark" href="#"><i class="fab fa-yahoo"></i></a>
+            <a class="bg-dark" href="#"><i class="fab fa-whatsapp text-green"></i></a>
+            <a class="bg-dark" href="#"><i class="fab fa-instagram text-red"></i></a>
+            <a class="bg-dark" href="#"><i class="fab fa-telegram-plane text-white"></i></a>
+        </div>
+    </footer>
+    <script type="text/javascript" src="{% static 'js/utility.js' %}"></script>
+    {% block script %}{% endblock %}
+</body>

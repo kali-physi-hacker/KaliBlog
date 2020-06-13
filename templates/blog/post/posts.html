@@ -1,0 +1,47 @@
+{% extends 'blog/post/base.html' %}
+{% load static %}
+
+{% block link %}
+    <link rel="stylesheet" href="{% static 'css/index.css' %}">{% endblock %}
+{% block content %}
+    <section class="xy-center">
+        <div class="container xy-center">
+            <div class="posts xy-center">
+                <a href="#" class="post">
+                    <img src="{% static 'images/nature_and_exploration.jpg' %}" alt="">
+                    <h3>The Mystery Behind Creation</h3>
+                </a>
+                <a href="#" class="post">
+                    <img src="{% static 'images/god_and_creation.jpg' %}" alt="">
+                    <h3>God and His Creation</h3>
+                </a>
+                <a href="#" class="post">
+                    <img src="{% static 'images/secret.jpg' %}" alt="">
+                    <h3>The Secret behind how the world existed</h3>
+                </a>
+            </div>
+            <div class="posts xy-center">
+                <a href="#" class="post">
+                    <img src="{% static 'images/planetory.jpg' %}" alt="">
+                    <h3>Planetory Models</h3>
+                </a>
+                <a href="#" class="post">
+                    <img src="{% static 'images/computer_science.jpg' %}" alt="">
+                    <h3>10 best practices for developers</h3>
+                </a>
+                <a href="#" class="post">
+                    <img src="{% static 'images/computer_science_art.jpg' %}" alt="">
+                    <h3>The Art of Computer Science</h3>
+                </a>
+            </div>
+            <div class="posts xy-center">
+                {% for post in posts %}
+                    <a href="#" class="post">
+                        <img src="{{ post.image.url }}" alt="">
+                        <h3>{{ post.title }}</h3>
+                    </a>
+                {% endfor %}
+            </div>
+        </div>
+    </section>
+{% endblock %}

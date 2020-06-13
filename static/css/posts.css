@@ -1,0 +1,196 @@
+.posts-container{
+    width: 100%;
+    min-height: calc(100vh - 80px - 70px);
+    padding-right: 1rem;
+    padding-left: 1rem;
+    padding-top: 3rem;
+    margin-right: auto;
+    margin-left: auto;
+}
+
+@media (min-width: 576px) {
+    .posts-container {
+        max-width: 540px;
+    }
+    .posts {
+        width: 100%;
+    }
+
+}
+
+@media (min-width: 768px) {
+    .posts-container {
+        max-width: 720px;
+    }
+}
+
+@media (min-width: 992px) {
+    .posts-container {
+        max-width: 960px;
+    }
+}
+
+.posts {
+    padding: 5rem;
+    /*border: 1px solid gray;*/
+    flex-direction: column;
+}
+
+.post {
+    border-top: 0.3rem solid #970BBD;
+    padding: 2rem;
+    width: 70%;
+    background: #fff;
+    border-radius: 8px;
+    margin: 1.2rem;
+    cursor: pointer;
+    transition: transform 0.19s ease-in-out;
+    display: flex;
+    color: #343a40;
+    text-decoration: none;
+    font-weight: 500;
+}
+
+.post:hover {
+    transform: scale(0.95);
+}
+
+.post img {
+    width: 30%;
+    margin-right: 3rem;
+}
+
+.post h2 {
+    margin-bottom: 0.4rem;
+}
+
+.post h2 {
+
+}
+
+.post-end {
+    display: flex;
+    align-items: center;
+    background: #ddd;
+    justify-content: center!important;
+    position: relative;
+}
+
+.post-end .far {
+    position: absolute;
+    top: 0;
+    right: -1.5rem;
+
+}
+
+.post-end .read-time {
+    position: absolute;
+    bottom: 0;
+}
+
+@media (min-width: 1200px) {
+    .posts-container {
+        max-width: 1140px;
+    }
+}
+
+@media (min-width: 1400px) {
+    .posts-container {
+        max-width: 1320px;
+    }
+}
+
+.add-post {
+    width: 60vw;
+}
+
+.container {
+    flex-direction: column;
+}
+
+.container form {
+    width: 100%;
+    flex-direction: column;
+}
+
+.container form input:not([type="file"]), .container form select, .container form textarea {
+    margin: 1.5rem;
+    padding: 12px 45px;
+    width: 100%;
+    font-size: 1.7em;
+    font-weight: 500;
+    color: #707070;
+    border: none;
+    outline: none;
+    box-shadow: 0 4px 6px -6px #222;
+    background: transparent;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+.container form input::placeholder, .container form textarea::placeholder {
+    font-size: 24px;
+    color: #ccc;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+.container form input[type="file"]::-webkit-file-upload-button {
+    display: none;
+    box-shadow: none!important;
+}
+
+.container form input[type="file"]::before {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    content: "Upload Post Image";
+    color: #fff;
+    background: #970BBD;
+    padding: 12px 18px;
+    display: inline-block;
+    border-radius: 8px;
+    width: auto;
+    cursor: pointer;
+    transition: transform 0.3s ease-in;
+}
+
+.add-post-preview-img {
+    width: 100vw;
+    height: 500px;
+    display: none;
+    /* background-image: url('../images/science\ and\ tech2.jpg'); */
+    background-size: cover;
+    background-position: center;
+    margin-bottom: 2rem;
+}
+
+.container .fa {
+    color: #777;
+}
+
+.container form select {
+    border-radius: 8px;
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15) !important;
+}
+
+.container form textarea {
+    resize: none;
+    height: 3.1rem;
+}
+
+.add-post-btn {
+    border: none;
+    outline: none;
+    padding: 11px 45px;
+    background: #28a745;
+    color: white;
+    font-weight: bold;
+    font-size: 17px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: transform 0.3s ease-in;
+    margin: 2rem;
+}
+
+.add-post-btn:active {
+    transform: scale(0.9);
+}

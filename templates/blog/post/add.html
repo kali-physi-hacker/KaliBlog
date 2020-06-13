@@ -1,0 +1,43 @@
+{% extends 'blog/post/base.html' %}
+
+{% load static %}
+
+{% block link %}
+    <link rel="stylesheet" href="{% static 'css/posts.css' %}" />
+{% endblock %}
+
+
+{% block content %}
+    <div class="container xy-center">
+        <!-- <img class="add-post-preview-img" src="../../../static/images/science and tech2.jpg" alt=""> -->
+        <div id="post_img_preview" class="add-post-preview-img"></div>
+        <div class="add-post">
+            <form enctype="multipart/form-data" method="POST" action="{% url 'blog:add_post' %}" class="xy-center">
+                {% csrf_token %}
+                <input name="{{ form.image.name }}" id="upload_image" type="file" autocomplete="off">
+                <input name="{{ form.title.name }}" placeholder="Title goes here ..." type="text" autocomplete="off">
+                <select name="{{ form.category.name }}" id="{{ form.category.id_for_label }}" autocomplete="off">
+                    <option value="">Select Category</option>
+                    {% for category in categories %}
+                        <option value="{{ category.pk }}">{{ category.title }}</option>
+                    {% endfor %}
+                </select>
+                <textarea placeholder="Post Body Goes here ..." name="{{ form.body.name }}" id="add_post_textarea" rows="1" autocomplete="off"></textarea>
+                <button class="add-post-btn shadow-lg">Add Post</button>
+            </form>
+        </div>
+       
+    </div>
+
+{% endblock %}
+
+{% block script %}
+    <script type="text/javascript" src="{% static 'js/post_category.js' %}"></script>
+    <script>
+        init("add_post_textarea")
+        document.getElementById("upload_image").onchange = function(){
+            readURL(this, "post_img_preview")
+            document.querySelector("#post_img_preview").style.display = "block"
+        }
+    </script>
+{% endblock %}

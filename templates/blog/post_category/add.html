@@ -1,0 +1,40 @@
+{% extends 'blog/post/base.html' %}
+
+{% load static %}
+
+
+{% block link %}
+    <link rel="stylesheet" href="{% static 'css/category.css' %}" />
+{% endblock %}
+
+
+{% block content %}
+    <div class="container xy-center">
+        <div class="add-category xy-center">
+            <form enctype="multipart/form-data" class="xy-center" action="#" method="POST">
+                {% csrf_token %}
+                <input placeholder="Title goes here ..." id="category_title" type="text" max_length="100" 
+                    name="{{ form.title.name }}" autocomplete='off' />
+                <input id="upload_image" type="file" name={{ form.image.name }} autocomplete="off" />
+                <div class="preview xy-center shadow" id="add_category_preview">
+                    <h3>Preview Here</h3>
+                </div>
+                <button class="submit-btn shadow" type="submit">Add Category</button>
+            </form>
+        </div>
+    </div>
+{% endblock %}
+
+{% block script %}
+    <script type="text/javascript" src="{% static 'js/post_category.js' %}"></script>
+    <script type="text/javascript">
+        document.getElementById("upload_image").onchange = function(){
+            readURL(this, "add_category_preview")
+            document.querySelector("#add_category_preview h3").style.color = "#fff"
+        }
+
+        document.getElementById("category_title").oninput = function(e) {
+            document.querySelector("#add_category_preview h3").innerHTML = `${e.target.value}`
+        }
+    </script>
+{% endblock %}

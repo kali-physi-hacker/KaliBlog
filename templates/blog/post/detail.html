@@ -1,0 +1,70 @@
+{% extends 'blog/post/base.html' %}
+{% load static %}
+
+{% block link %}
+    <link rel="stylesheet" href="{% static 'css/post-detail.css' %}">
+{% endblock %}
+
+{% block title %}My Blog{% endblock %}
+
+{% block content %}
+    <div img-src="{{ post.image.url }}" class="post-head bg-dark"></div>
+    <div class="container xy-center">
+        <div class="post shadow-sm">
+            <h2 class="post-heading">{{ post.title }}</h2>
+            <p class="post-body">{{ post.body }}</p>
+            <div class="actions">
+                <a href="#" id="share"><i class="fa fa-2x fa-share-alt text-blue"></i></a>
+            </div>
+        </div>
+        <div class="comments">
+            {% for comment in comments %}
+                <div class="comment xy-center">
+                    <span class="user-icon"><i class="far text-blue fa-user"></i></span>
+                    <p style="display: inline">{{ comment.body }}</p>
+                </div>
+            {% endfor %}
+            <form method="POST" action="">
+                {% csrf_token %}
+                <div class="comment xy-center">
+                    <span class="user-icon"><i class="far text-blue fa-user"></i></span>
+                    <input name="body" class="form-control" type="text">
+                </div>
+            </form>
+{#            <hr>#}
+        </div>
+    </div>
+    <div id="modal" class="modal xy-center">
+        <div onclick="event.stopPropagation()" class="modal-content">
+            <h4 class="modal-header">Fill in the details to share your post</h4>
+            <form method="POST" action="{{ post.get_absolute_url }}">
+                {% csrf_token %}
+                <div class="modal-body">
+                    <div class="input-group">
+                        <input name="{{ form.first_name.name }}" placeholder="First Name" type="text" class="form-control">
+                        <input name="{{ form.last_name.name }}" placeholder="Last Name" type="text" class="form-control">
+                    </div>
+                    <div class="input-group">
+                        <input name="{{ form.email.name }}" placeholder="Email" type="email" class="form-control">
+                        <input name="{{ form.to.name }}" placeholder="to" type="email" class="form-control">
+                    </div>
+                    <div class="input-group">
+                        <textarea placeholder="Comments..." name="{{ form.comments.name }}" id="" class="form-control"></textarea>
+                    </div>
+                </div>
+                <div class="modal-footer xy-center">
+                    <button id="close-modal" class="cancel-btn">Cancel</button>
+                    <button class="send-btn">Send</button>
+                </div>
+            </form>
+        </div>
+    </div>
+{% endblock %}
+
+{% block script %}
+    <script type="text/javascript" src="{% static 'js/base.js' %}"></script>
+    <script>
+        const postHead = document.querySelector(".post-head")
+        postHead.style.backgroundImage = `url('${postHead.getAttribute('img-src')}')`
+    </script>
+{% endblock %}

@@ -1,0 +1,76 @@
+{% load static %}
+{% load modulo %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'css/index.css' %}">
+    <link rel="stylesheet" href="{% static 'css/base.css' %}">
+    <link rel="stylesheet" href="{% static 'fontawesome-free/css/all.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/universal.css' %}">
+    <title>Kali Blog</title>
+</head>
+<body>
+    <header class="home-header">
+        <div class="header-content">
+            <div class="brand">
+                <a href="#" class="brand-name">Kali Blog</a>
+                <p class="sub-brand">A blog for scientist</p>
+            </div>
+            <nav class="top-nav">
+                <ul>
+                    <button class="close-nav">&times</button>
+                    <li><a class="shadow active" href="{% url 'home' %}">HOME</a></li>
+                    <li><a class="shadow" href="{% url 'blog:all_posts' %}">POSTS</a></li>
+                    <li><a class="shadow" href="#">NEWS</a></li>
+                    <li><a class="shadow" href="#">ABOUT</a></li>
+                </ul>
+            </nav>
+            <p class="header-text">Exploring Nature and bringing liveliness <br/>into reading through posts</p>
+        </div>
+    </header>
+    <div class="functionalities">
+        <a href="posts/category/add/" class="add-category shadow">Add Category <i style="margin-left: 0.5rem;" class="fa fa-plus"></i></a>
+        <a href="posts/add/" class="add-post shadow">Add Post <i style="margin-left: 0.5rem;" class="fa fa-plus"></i></a>
+
+    </div>
+    <section class="section">
+        {% if categories %}
+            <div class="content xy-center">
+                {% for category in categories %}
+                    <a href="{{ category.get_absolute_url }}" img_src="{{ category.image.url }}" class="category xy-center">
+                        <h3>{{ category.title }}</h3>
+                        <!-- <img src="images/" alt=""> -->
+                    </a>
+                    {% ifequal forloop.counter|modulo_two:2 0  %}
+                        </div>
+                        <div class="content xy-center">
+                    {% endifequal %}
+                {% endfor %}
+            </div>
+        {% else %}
+            <div class="content xy-center">
+                <h3>There are no categories</h3>
+            </div>
+        {% endif %}
+            
+    </section>
+    <footer class="shadow">
+        <p>Copyright &copy;
+            <script>document.write(new Date().getFullYear())
+        </script> Kali Association of Developers</p>
+        <div class="social">
+            <a class="bg-dark" href="#"><i class="fab fa-facebook-f text-blue"></i></a>
+            <a class="bg-dark" href="#"><i class="fab fa-google text-red"></i></a>
+            <a class="bg-dark" href="#"><i class="fab fa-twitter text-blue"></i></a>
+            <a class="bg-dark" href="#"><i class="fab fa-linkedin-in text-blue"></i></a>
+            <a class="bg-dark" href="#"><i class="fab fa-yahoo"></i></a>
+            <a class="bg-dark" href="#"><i class="fab fa-whatsapp text-green"></i></a>
+            <a class="bg-dark" href="#"><i class="fab fa-instagram text-red"></i></a>
+            <a class="bg-dark" href="#"><i class="fab fa-telegram-plane text-white"></i></a>
+        </div>
+    </footer>
+    <script src="{% static 'js/utility.js' %}"></script>
+</body>
+</html>

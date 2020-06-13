@@ -1,0 +1,50 @@
+[
+  {
+    "model": "blog.postcategory",
+    "pk": 1,
+    "fields": {
+      "title": "Chemistry",
+      "slug": "chemistry-b8bd4dac-b8c9-4758-926a-12b55962cd3d-3291613664",
+      "image": "/uploads/categories/chemistry.jpg",
+      "approve": true,
+      "created": "2020-05-28T10:50:07.518Z",
+      "updated": "2020-05-28T17:56:26.432Z"
+    }
+  },
+  {
+    "model": "blog.postcategory",
+    "pk": 2,
+    "fields": {
+      "title": "Physics",
+      "slug": "physics-f3a74817-9b99-42c3-a236-ea1af5dead85-9782212297",
+      "image": "/uploads/categories/physics.jpg",
+      "approve": true,
+      "created": "2020-05-28T17:01:04.733Z",
+      "updated": "2020-05-28T17:01:04.733Z"
+    }
+  },
+  {
+    "model": "blog.postcategory",
+    "pk": 3,
+    "fields": {
+      "title": "Biology",
+      "slug": "biology-af2c8038-c555-49a6-af84-72e89ca32256-179721957",
+      "image": "/uploads/categories/biology.jpg",
+      "approve": true,
+      "created": "2020-05-28T17:01:59.083Z",
+      "updated": "2020-05-28T17:01:59.084Z"
+    }
+  },
+  {
+    "model": "blog.postcategory",
+    "pk": 4,
+    "fields": {
+      "title": "Technology",
+      "slug": "technology-94034057-c703-4792-9e68-61927812c5b1-6687621029",
+      "image": "/uploads/categories/computer-programming.jpg",
+      "approve": true,
+      "created": "2020-05-28T17:41:56.187Z",
+      "updated": "2020-05-28T17:42:05.343Z"
+    }
+  }
+]

@@ -1,0 +1,88 @@
+.add-category {
+    min-width: 50%;
+    flex-direction: column;
+}
+
+.add-category form {
+    flex-direction: column;
+    width: 100%;
+}
+
+.add-category input {
+    margin: 0.1rem 0 5rem 0;
+    padding: 12px 45px;
+    font-size: 17px;
+    color: #707070;
+    border: none;
+    outline: none;
+    font-weight: 500;
+}
+
+.add-category input[type="text"] {
+    width: 100%;
+    box-shadow: 0 4px 6px -6px #222;
+    background: transparent;
+}
+
+.add-category input[type="text"]::placeholder {
+    font-size: 18px;
+}
+
+.add-category input[type="file"]::-webkit-file-upload-button {
+    visibility: hidden;
+    display: none;
+}
+
+.add-category input[type="file"]::before {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    content: "Upload Image";
+    color: #fff;
+    background: #970BBD;
+    padding: 12px 18px;
+    display: inline-block;
+    border-radius: 8px;
+    width: 106px;
+    cursor: pointer;
+    transition: transform 0.3s ease-in;
+}
+
+.add-category input[type="file"]:active::before {
+    transform: scale(0.9);
+
+}
+
+.add-category:focus {
+    border: none;
+}
+
+.preview {
+    width: 70%;
+    height: 40vh;
+    border-radius: 8px;
+    background-size: cover;
+    background-position: center;
+    /* border: 1px solid #C0C0C0; */
+}
+
+.preview h3 {
+    color: #777;
+    font-size: 40px;
+}
+
+.submit-btn {
+    padding: 9px 18px;
+    margin: 1.4rem;
+    background: #28a745;
+    border: none;
+    outline: none;
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+    transition: transform 0.3s ease-in;
+}
+
+.submit-btn:active {
+    transform: scale(0.9);
+}
