@@ -25,13 +25,15 @@ SECRET_KEY = '@pjqev_uo59l@+aw=*9=p14aa#p_n4fnk(jyi^0=r*z-4krgrs'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
 
 INSTALLED_APPS = [
     'blog.apps.BlogConfig',
+    'authentication.apps.AuthenticationConfig',
+    'tinymce',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -75,17 +77,9 @@ WSGI_APPLICATION = 'mysite.wsgi.application'
 # https://docs.djangoproject.com/en/2.2/ref/settings/#databases
 
 DATABASES = {
-    # 'default': {
-    #     'ENGINE': 'django.db.backends.sqlite3',
-    #     'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-    # }
     'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'github_actions',
-        'USER': 'radorado',
-        'PASSWORD': 'radorado',
-        'HOST': '127.0.0.1',
-        'PORT': '5432',
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
     }
 }
 
@@ -119,7 +113,9 @@ AUTH_PASSWORD_VALIDATORS = [
     {
         'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
     },
-]
+]  
+
+AUTH_USER_MODEL = "authentication.User"
 
 
 # Internationalization
@@ -134,6 +130,17 @@ USE_I18N = True
 USE_L10N = True
 
 USE_TZ = True
+
+
+# MESSAGE CLASSES
+from django.contrib import messages
+MESSAGE_TAGS = {
+    messages.DEBUG: 'alert-info',
+    messages.INFO: 'alert-info',
+    messages.SUCCESS: 'alert-success',
+    messages.WARNING: 'alert-warning',
+    messages.ERROR: 'alert-danger'
+}
 
 
 # Static files (CSS, JavaScript, Images)
@@ -153,3 +160,50 @@ EMAIL_HOST_USER = 'brownjunior956@gmail.com'
 EMAIL_HOST_PASSWORD = 'BLACKFOXA1B2C3IQ'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
+
+
+# TinyMce Configurations'
+TINYMCE_JS_URL = os.path.join(STATIC_URL, "js/tinymce/tinymce.min.js")
+TINYMCE_JS_ROOT = os.path.join(STATIC_URL, "js/tinymce")
+
+# TINYMCE_DEFAULT_CONFIG = {
+#     'height': 360,
+#     'width': 1120,
+#     'cleanup_on_startup': True,
+#     'custom_undo_redo_levels': 20,
+#     'selector': 'textarea',
+#     'theme': 'modern',
+#     'plugins': '''
+#             textcolor save link image media preview codesample contextmenu
+#             table code lists fullscreen  insertdatetime  nonbreaking
+#             contextmenu directionality searchreplace wordcount visualblocks
+#             visualchars code fullscreen autolink lists  charmap print  hr
+#             anchor pagebreak emoticons 
+#             ''',
+#     'toolbar1': '''
+#             fullscreen preview bold italic underline | fontselect,
+#             fontsizeselect  | forecolor backcolor | alignleft alignright |
+#             aligncenter alignjustify | indent outdent | bullist numlist table |
+#             | link image media | codesample | emoticons |
+#             ''',
+#     'toolbar2': '''
+#             visualblocks visualchars |
+#             charmap hr pagebreak nonbreaking anchor |  code |
+#             ''',
+#     'contextmenu': 'formats | link image',
+#     'menubar': True,
+#     'statusbar': True,
+#     }
+
+
+TINYMCE_DEFAULT_CONFIG = {
+    'height' : 300,
+    'plugins': "image,imagetools,media,codesample,link,code",
+    'cleanup_on_startup': True,
+    'menubar': False,
+    'toolbar': "styleselect |undo redo | bold italic | alignleft aligncenter alignright | link image media codesample code",
+    'image_caption': True,
+    'image_advtab': True,
+    'custom_undo_redo_levels': 10,
+    'file_browser_callback' : "myFileBrowser"
+}

@@ -1,0 +1,35 @@
+$primary: #00796b;
+$secondary: #6b7b8c;
+
+.nav-item {
+    position: relative!important;
+    margin-right: 8px;
+}
+
+.nav-item::after {
+    content: "";
+    width: 50%;
+    border-bottom: 3px solid #fff;
+    background-color: #fff;
+    position: absolute;
+    bottom: 5px;
+    left: 25%;
+    visibility: hidden;
+    transition: all 0.25s cubic-bezier(0.6, -0.28, 0.735, 0.045);
+}
+
+.nav-item.active::after {
+    visibility: visible;
+}
+
+.nav-item:hover::after {
+    visibility: visible;
+    width: 100%;
+    transform: translateX(-25%);
+}
+
+main {
+    margin-top: 9rem;
+}
+
+@import "../../node_modules/bootstrap/scss/bootstrap.scss";

@@ -1,0 +1,59 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block custom_style_link %} <link rel="stylesheet" href="{% static 'css/auth.css' %}" /> {% endblock %}
+
+
+{% block header %}{% endblock %}
+
+{% block start_container %}
+
+    <div class="container">
+        {% for message in messages %}
+            {% if message.tags == 'alert-danger' %}
+                <div class="alert {{ message.tags }} text-danger p-1 alert-dismissable" role="alert">
+                    <!-- <p> -->
+                        <span>Invalid Username or Password
+                            <!-- <span style="cursor: pointer;" type="span" class="close text-danger" data-dismiss="alert" aria-label="Close">
+                                &times;
+                            </span> -->
+                        </span>
+                    <!-- </p> -->
+                    
+                </div>
+            {% endif %}
+
+        {% endfor %}
+        <form action="" method="POST" class="form-signup shadow-lg p-5 rounded">
+            {% csrf_token %}
+            <h1 class="h3 mb-4 font-weight-bold text-primary text-center">KaliBlog</h1>
+            <div class="row mb-4">
+                <div class="col">
+                    <label class="placeholder" for="{{ form.first_name.id_for_label }}">First Name</label>
+                    <input type="text" class="form-control " id="{{ form.first_name.id_for_label }}"
+                        name="{{ form.first_name.name }}" autocomplete="off" required />
+                </div>
+                <div class="col">
+                    <label class="placeholder" for="{{ form.last_name.id_for_label }}">Last Name</label>
+                    <input type="text" class="form-control" id="{{ form.last_name.id_for_label }}"
+                        name="{{ form.last_name.name }}" autocomplete="off" required />
+                </div>
+            </div>
+            <div class="row mb-5">
+                <div class="col">
+                    <label class="placeholder" for="{{ form.email.id_for_label }}">Email</label>
+                    <input type="text" class="form-control " id="{{ form.email.id_for_label }}"
+                        name="{{ form.email.name }}" autocomplete="off" required />
+                </div>
+                <div class="col">
+                    <label class="placeholder" for="{{ form.password.id_for_label }}">Password</label>
+                    <input type="text" class="form-control" id="{{ form.password.id_for_label }}"
+                        name="{{ form.password.name }}" autocomplete="off" required/>
+                </div>
+            </div>
+
+            <button type="submit" class="btn btn-sm btn-block btn-primary">Sign up</button>
+        </form>
+    </div>
+
+{% endblock start_container %}

@@ -1,0 +1,18 @@
+{% comment %} <div class="paginator">
+    <span class="step-links">
+        {% if page.has_previous %}
+            <a href="?page={{ page.previous_page_number }}">Previous</a>
+        {% endif %}
+        <span class="current">
+            Page {{ page.number }} of {{ page.paginator.num_pages }}
+        </span>
+        {% if page.has_next %}
+            <a href="?page={{ page.next_page_number }}">Next</a>
+        {% endif %}
+    </span>
+</div> {% endcomment %}
+
+<nav class="blog-pagination mt-3 mb-3 text-center">
+    <a href="?page={{page.previous_page_number}}" class="btn btn-outline-secondary {% if not page.has_previous %}disabled{% endif %}">Older</a>
+    <a href="?page={{page.next_page_number}}" class="btn btn-outline-primary {% if not page.has_next %}disabled{% endif %}" tabindex="-1" aria-disabled="true">Newer</a>
+</nav>

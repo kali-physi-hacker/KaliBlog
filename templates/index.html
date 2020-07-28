@@ -1,76 +1,237 @@
+{% extends 'base.html' %}
 {% load static %}
-{% load modulo %}
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="{% static 'css/index.css' %}">
-    <link rel="stylesheet" href="{% static 'css/base.css' %}">
-    <link rel="stylesheet" href="{% static 'fontawesome-free/css/all.min.css' %}">
-    <link rel="stylesheet" href="{% static 'css/universal.css' %}">
-    <title>Kali Blog</title>
-</head>
-<body>
-    <header class="home-header">
-        <div class="header-content">
-            <div class="brand">
-                <a href="#" class="brand-name">Kali Blog</a>
-                <p class="sub-brand">A blog for scientist</p>
-            </div>
-            <nav class="top-nav">
-                <ul>
-                    <button class="close-nav">&times</button>
-                    <li><a class="shadow active" href="{% url 'home' %}">HOME</a></li>
-                    <li><a class="shadow" href="{% url 'blog:all_posts' %}">POSTS</a></li>
-                    <li><a class="shadow" href="#">NEWS</a></li>
-                    <li><a class="shadow" href="#">ABOUT</a></li>
-                </ul>
-            </nav>
-            <p class="header-text">Exploring Nature and bringing liveliness <br/>into reading through posts</p>
-        </div>
-    </header>
-    <div class="functionalities">
-        <a href="posts/category/add/" class="add-category shadow">Add Category <i style="margin-left: 0.5rem;" class="fa fa-plus"></i></a>
-        <a href="posts/add/" class="add-post shadow">Add Post <i style="margin-left: 0.5rem;" class="fa fa-plus"></i></a>
 
-    </div>
-    <section class="section">
-        {% if categories %}
-            <div class="content xy-center">
-                {% for category in categories %}
-                    <a href="{{ category.get_absolute_url }}" img_src="{{ category.image.url }}" class="category xy-center">
-                        <h3>{{ category.title }}</h3>
-                        <!-- <img src="images/" alt=""> -->
-                    </a>
-                    {% ifequal forloop.counter|modulo_two:2 0  %}
-                        </div>
-                        <div class="content xy-center">
-                    {% endifequal %}
-                {% endfor %}
+{% comment %} {% block body_class %}bg-primary d-flex h-100 text-center text-white bg-dark{% endblock %} {% endcomment %}
+
+{% block custom_style_link %} 
+    <link rel="stylesheet" href="{% static 'css/carousel.css' %}" /> 
+{% endblock %}
+
+{% block carousel %}
+
+<div class="carousel slide" id="homepageCarousel" data-ride="carousel">
+    <ol class="carousel-indicators">
+        <li data-target="#homepageCarousel" data-slide-to="0" class="active"></li>
+        <li data-target="#homepageCarousel" data-slide-to="1"></li>
+        <li data-target="#homepageCarousel" data-slide-to="2"></li>
+    </ol>
+    <div class="carousel-inner">
+        <div class="carousel-item active">
+            {% comment %} <svg class="bd-placeholder-img" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg" 
+                preserveAspectRatio="xMidYMid slice" role="img" focusable="false"><rect width="100%" 
+                    height="100%" fill="#777"/></svg> {% endcomment %}
+            <div class="carousel-bg-image" img_src="{% static 'images/write4.jpg' %}"></div>
+            {% comment %} <img src="{% static 'images/write4.jpg' %}" /> {% endcomment %}
+            <div class="container">
+                <div class="carousel-caption text-left">
+                    <h1>What's on your mind</h1>
+                    <p>
+                        Express your thoughts through writing of stories. Share your experience, knowledge and awesome ideas
+                        to people out there. Remember, you learn more by sharing and teaching more.
+                    </p>
+                    <p><a href="#" role="button" class="btn btn-lg btn-primary">Learn more</a></p>
+                </div>
             </div>
-        {% else %}
-            <div class="content xy-center">
-                <h3>There are no categories</h3>
-            </div>
-        {% endif %}
-            
-    </section>
-    <footer class="shadow">
-        <p>Copyright &copy;
-            <script>document.write(new Date().getFullYear())
-        </script> Kali Association of Developers</p>
-        <div class="social">
-            <a class="bg-dark" href="#"><i class="fab fa-facebook-f text-blue"></i></a>
-            <a class="bg-dark" href="#"><i class="fab fa-google text-red"></i></a>
-            <a class="bg-dark" href="#"><i class="fab fa-twitter text-blue"></i></a>
-            <a class="bg-dark" href="#"><i class="fab fa-linkedin-in text-blue"></i></a>
-            <a class="bg-dark" href="#"><i class="fab fa-yahoo"></i></a>
-            <a class="bg-dark" href="#"><i class="fab fa-whatsapp text-green"></i></a>
-            <a class="bg-dark" href="#"><i class="fab fa-instagram text-red"></i></a>
-            <a class="bg-dark" href="#"><i class="fab fa-telegram-plane text-white"></i></a>
         </div>
-    </footer>
-    <script src="{% static 'js/utility.js' %}"></script>
-</body>
-</html>
+        <div class="carousel-item">
+            {% comment %} <svg class="bd-placeholder-img" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg" 
+                preserveAspectRatio="xMidYMid slice" role="img" focusable="false"><rect width="100%" 
+                    height="100%" fill="#777"/></svg> {% endcomment %}
+            {% comment %} <img src="{% static 'images/read.jpg' %}" alt="Cover Image" height="100%" width="100%" /> {% endcomment %}
+            <div class="carousel-bg-image" img_src="{% static 'images/read.jpg' %}"></div>
+            <div class="container">
+                <div class="carousel-caption">
+                    <h1>Know More</h1>
+                    <p>
+                        Read ideas and knowledge from world class great authors. "You are only limited
+                        by the thoughts, and your thoughts are affected by things your read", A Physichologist
+                        said.
+                    </p>
+                    <p><a href="{% url 'blog:post_list' %}" class="btn btn-lg btn-primary">Explore Articles</a></p>
+                </div>
+            </div>
+        </div>
+        <div class="carousel-item">
+            {% comment %} <svg class="bd-placeholder-img" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg" 
+                preserveAspectRatio="xMidYMid slice" role="img" focusable="false"><rect width="100%" 
+                    height="100%" fill="#777"/></svg> {% endcomment %}
+            {% comment %} <img src="{% static 'images/join2.jpg' %}" alt="Cover Image" height="100%" width="100%" /> {% endcomment %}
+            <div class="carousel-bg-image" img_src="{% static 'images/join2.jpg' %}"></div>
+            <div class="container">
+                <div class="carousel-caption text-right">
+                    <h1>Meet People</h1>
+                    <p>
+                        Join our community which consist of diverse group of individuals with a wide variety
+                        of field of speciality from all over the world.
+                    </p>
+                    <p><a href="#" class="btn btn-lg btn-primary">Forum</a></p>
+                </div>
+            </div>
+        
+        </div>
+    <a class="carousel-control-prev" href="#homepageCarousel" role="button" data-slide="prev">
+        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+        <span class="sr-only">Previous</span>
+    </a>
+    <a class="carousel-control-next" href="#homepageCarousel" role="button" data-slide="next">
+        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+        <span class="sr-only">Next</span>
+    </a>
+</div>
+
+{% endblock %}
+
+{% block start_container %}
+    <main>
+        <div id="featured-post" class="container">
+            <div class="row mb-2">
+                {% for post in posts %}
+                <div class="col-md-6">
+                  <div class="row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
+                    <div class="col p-4 d-flex flex-column position-static">
+                      <strong class="d-inline-block mb-2 text-primary">World</strong>
+                      <h3 class="mb-0">{{ post.title }}</h3>
+                      <div class="mb-1 text-muted">{{ post.published_date }}</div>
+                      <p class="card-text mb-auto">{{ post.body | truncatechars:70 }}</p>
+                      <a href="{{ post.get_absolute_url }}" class="stretched-link">Continue reading</a>
+                    </div>
+                    <div class="col-auto d-none d-lg-block">
+                      {% comment %} <svg class="bd-placeholder-img" width="200" height="250" xmlns="http://www.w3.org/2000/svg" aria-label="Placeholder: Thumbnail" preserveAspectRatio="xMidYMid slice" role="img" focusable="false"><title>Placeholder</title><rect width="100%" height="100%" fill="#55595c"/><text x="50%" y="50%" fill="#eceeef" dy=".3em">Thumbnail</text></svg> {% endcomment %}
+                        {% comment %} <img src="{{ post.image.url }}" alt="Post image" width="200" height="250" /> {% endcomment %}
+                        <div class="post-image" img_src="{{ post.image.url }}"></div>
+                    </div>
+                  </div>
+                </div>
+                {% endfor %}
+                {% comment %} <div class="col-md-6">
+                  <div class="row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
+                    <div class="col p-4 d-flex flex-column position-static">
+                      <strong class="d-inline-block mb-2 text-success">Design</strong>
+                      <h3 class="mb-0">Post title</h3>
+                      <div class="mb-1 text-muted">Nov 11</div>
+                      <p class="mb-auto">This is a wider card with supporting text below as a natural lead-in to additional content.</p>
+                      <a href="#" class="stretched-link">Continue reading</a>
+                    </div>
+                    <div class="col-auto d-none d-lg-block">
+                      <svg class="bd-placeholder-img" width="200" height="250" xmlns="http://www.w3.org/2000/svg" aria-label="Placeholder: Thumbnail" preserveAspectRatio="xMidYMid slice" role="img" focusable="false"><title>Placeholder</title><rect width="100%" height="100%" fill="#55595c"/><text x="50%" y="50%" fill="#eceeef" dy=".3em">Thumbnail</text></svg>
+            
+                    </div>
+                  </div>
+                </div> {% endcomment %}
+            </div>
+        </div>
+        <div class="container">
+            <div class="row">
+              <div class="col-md-8">
+                <h3 class="pb-4 mb-4 font-italic border-bottom">
+                  From the Firehose
+                </h3>
+          
+                <div class="blog-post">
+                  <h2 class="blog-post-title">Sample blog post</h2>
+                  <p class="blog-post-meta">January 1, 2014 by <a href="#">Mark</a></p>
+          
+                  <p>This blog post shows a few different types of content that’s supported and styled with Bootstrap. Basic typography, images, and code are all supported.</p>
+                  <hr>
+                  <p>Cum sociis natoque penatibus et magnis <a href="#">dis parturient montes</a>, nascetur ridiculus mus. Aenean eu leo quam. Pellentesque ornare sem lacinia quam venenatis vestibulum. Sed posuere consectetur est at lobortis. Cras mattis consectetur purus sit amet fermentum.</p>
+                  <blockquote>
+                    <p>Curabitur blandit tempus porttitor. <strong>Nullam quis risus eget urna mollis</strong> ornare vel eu leo. Nullam id dolor id nibh ultricies vehicula ut id elit.</p>
+                  </blockquote>
+                  <p>Etiam porta <em>sem malesuada magna</em> mollis euismod. Cras mattis consectetur purus sit amet fermentum. Aenean lacinia bibendum nulla sed consectetur.</p>
+                  <h2>Heading</h2>
+                  <p>Vivamus sagittis lacus vel augue laoreet rutrum faucibus dolor auctor. Duis mollis, est non commodo luctus, nisi erat porttitor ligula, eget lacinia odio sem nec elit. Morbi leo risus, porta ac consectetur ac, vestibulum at eros.</p>
+                  <h3>Sub-heading</h3>
+                  <p>Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus.</p>
+                  <pre><code>Example code block</code></pre>
+                  <p>Aenean lacinia bibendum nulla sed consectetur. Etiam porta sem malesuada magna mollis euismod. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa.</p>
+                  <h3>Sub-heading</h3>
+                  <p>Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Aenean lacinia bibendum nulla sed consectetur. Etiam porta sem malesuada magna mollis euismod. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus.</p>
+                  <ul>
+                    <li>Praesent commodo cursus magna, vel scelerisque nisl consectetur et.</li>
+                    <li>Donec id elit non mi porta gravida at eget metus.</li>
+                    <li>Nulla vitae elit libero, a pharetra augue.</li>
+                  </ul>
+                  <p>Donec ullamcorper nulla non metus auctor fringilla. Nulla vitae elit libero, a pharetra augue.</p>
+                  <ol>
+                    <li>Vestibulum id ligula porta felis euismod semper.</li>
+                    <li>Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus.</li>
+                    <li>Maecenas sed diam eget risus varius blandit sit amet non magna.</li>
+                  </ol>
+                  <p>Cras mattis consectetur purus sit amet fermentum. Sed posuere consectetur est at lobortis.</p>
+                </div><!-- /.blog-post -->
+          
+                <div class="blog-post">
+                  <h2 class="blog-post-title">Another blog post</h2>
+                  <p class="blog-post-meta">December 23, 2013 by <a href="#">Jacob</a></p>
+          
+                  <p>Cum sociis natoque penatibus et magnis <a href="#">dis parturient montes</a>, nascetur ridiculus mus. Aenean eu leo quam. Pellentesque ornare sem lacinia quam venenatis vestibulum. Sed posuere consectetur est at lobortis. Cras mattis consectetur purus sit amet fermentum.</p>
+                  <blockquote>
+                    <p>Curabitur blandit tempus porttitor. <strong>Nullam quis risus eget urna mollis</strong> ornare vel eu leo. Nullam id dolor id nibh ultricies vehicula ut id elit.</p>
+                  </blockquote>
+                  <p>Etiam porta <em>sem malesuada magna</em> mollis euismod. Cras mattis consectetur purus sit amet fermentum. Aenean lacinia bibendum nulla sed consectetur.</p>
+                  <p>Vivamus sagittis lacus vel augue laoreet rutrum faucibus dolor auctor. Duis mollis, est non commodo luctus, nisi erat porttitor ligula, eget lacinia odio sem nec elit. Morbi leo risus, porta ac consectetur ac, vestibulum at eros.</p>
+                </div><!-- /.blog-post -->
+          
+                <div class="blog-post">
+                  <h2 class="blog-post-title">New feature</h2>
+                  <p class="blog-post-meta">December 14, 2013 by <a href="#">Chris</a></p>
+          
+                  <p>Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Aenean lacinia bibendum nulla sed consectetur. Etiam porta sem malesuada magna mollis euismod. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus.</p>
+                  <ul>
+                    <li>Praesent commodo cursus magna, vel scelerisque nisl consectetur et.</li>
+                    <li>Donec id elit non mi porta gravida at eget metus.</li>
+                    <li>Nulla vitae elit libero, a pharetra augue.</li>
+                  </ul>
+                  <p>Etiam porta <em>sem malesuada magna</em> mollis euismod. Cras mattis consectetur purus sit amet fermentum. Aenean lacinia bibendum nulla sed consectetur.</p>
+                  <p>Donec ullamcorper nulla non metus auctor fringilla. Nulla vitae elit libero, a pharetra augue.</p>
+                </div><!-- /.blog-post -->
+          
+                <nav class="blog-pagination">
+                  <a class="btn btn-outline-primary" href="#">Older</a>
+                  <a class="btn btn-outline-secondary disabled" href="#" tabindex="-1" aria-disabled="true">Newer</a>
+                </nav>
+          
+              </div>
+          
+              <aside class="col-md-4">
+                <div class="p-4 mb-3 bg-light rounded">
+                  <h4 class="font-italic">About</h4>
+                  <p class="mb-0">Etiam porta <em>sem malesuada magna</em> mollis euismod. Cras mattis consectetur purus sit amet fermentum. Aenean lacinia bibendum nulla sed consectetur.</p>
+                </div>
+          
+                <div class="p-4">
+                  <h4 class="font-italic">Archives</h4>
+                  <ol class="list-unstyled mb-0">
+                    <li><a href="#">March 2014</a></li>
+                    <li><a href="#">February 2014</a></li>
+                    <li><a href="#">January 2014</a></li>
+                    <li><a href="#">December 2013</a></li>
+                    <li><a href="#">November 2013</a></li>
+                    <li><a href="#">October 2013</a></li>
+                    <li><a href="#">September 2013</a></li>
+                    <li><a href="#">August 2013</a></li>
+                    <li><a href="#">July 2013</a></li>
+                    <li><a href="#">June 2013</a></li>
+                    <li><a href="#">May 2013</a></li>
+                    <li><a href="#">April 2013</a></li>
+                  </ol>
+                </div>
+          
+                <div class="p-4">
+                  <h4 class="font-italic">Elsewhere</h4>
+                  <ol class="list-unstyled">
+                    <li><a href="#">GitHub</a></li>
+                    <li><a href="#">Twitter</a></li>
+                    <li><a href="#">Facebook</a></li>
+                  </ol>
+                </div>
+              </aside>
+          
+            </div>
+        </div>
+    </main>
+{% endblock start_container %}
+
+{% block end_container %}
+    <script type="text/javascript" src="{% static 'js/carousel.js' %}"></script>
+{% endblock end_container %}

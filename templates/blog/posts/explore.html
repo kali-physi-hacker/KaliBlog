@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block custom_style_link %} <link rel="stylesheet" href="{% static 'css/explore.css' %}" /> {% endblock %}
+
+{% load modulo %}
+
+
+{% block start_container %}
+    <main class="container">
+        {% if posts %}
+            <div class="row mb-2">
+            {% for post in posts %}
+                <div class="col-md-6 post-container">
+                    <div class="row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
+                    <div class="col p-4 d-flex flex-column position-static">
+                        <strong class="d-inline-block mb-2 text-primary">World</strong>
+                        <h3 class="mb-0">{{ post.title }}</h3>
+                        <div class="mb-1 text-muted">{{ post.published_date }}</div>
+                        <div class="card-text mb-auto">
+                            {{ post.body | truncatechars:70 | safe }}
+                        </div>
+                        <a href="{{ post.get_absolute_url }}" class="stretched-link">Continue reading</a>
+                    </div>
+                    <div class="col-auto d-none d-lg-block">
+                        {% comment %} <svg class="bd-placeholder-img" width="200" height="250" xmlns="http://www.w3.org/2000/svg" aria-label="Placeholder: Thumbnail" preserveAspectRatio="xMidYMid slice" role="img" focusable="false"><title>Placeholder</title><rect width="100%" height="100%" fill="#55595c"/><text x="50%" y="50%" fill="#eceeef" dy=".3em">Thumbnail</text></svg> {% endcomment %}
+                        {% comment %} <img src="{{ post.image.url }}" width="200" height="250" /> {% endcomment %}
+                        <div class="post-image" img_src="{{ post.image.url }}"></div>
+                    </div>
+                    </div>
+                </div>
+            {% ifequal forloop.counter|modulo_two:2 0 %}
+            </div>
+            <div class="row mb-2">
+            {% endifequal %}
+            {% endfor %}
+            </div>
+            {% include 'blog/posts/paginator.html' with page=page %}
+        {% else %}
+            <div class="row mb-2">
+                <p class="text-center">No Posts</p><hr />
+            </div>
+        {% endif %}
+    </main>
+{% endblock start_container %}
+
+
+{% block end_container %}
+    <script type="text/javascript" src="{% static 'js/explore.js' %}"></script>
+{% endblock end_container %}

@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block custom_style_link %}
+    {{ form.meta }}
+{% endblock %}
+
+
+{% block start_container %}
+    <form method="POST" action="#">
+        {% csrf_token %}
+        {{ form.body }}
+    </form>
+
+{% endblock start_container %}
+ 
+
+{% block end_container %}
+
+    <script type="text/javascript" src="{% static 'js/tinymce/tinymce.min.js' %}" ></script>
+
+{% endblock end_container %}

@@ -1,0 +1,22 @@
+{
+  "name": "kali-blog",
+  "version": "1.0.0",
+  "description": "![Home page](project-images/home.png)",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kali-physi-hacker/KaliBlog.git"
+  },
+  "author": "Desmond Brown",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/kali-physi-hacker/KaliBlog/issues"
+  },
+  "homepage": "https://github.com/kali-physi-hacker/KaliBlog#readme",
+  "dependencies": {
+    "bootstrap": "^5.0.0-alpha1"
+  }
+}

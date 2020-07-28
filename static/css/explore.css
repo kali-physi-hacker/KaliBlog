@@ -1,0 +1,35 @@
+.post-image {
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    width: 200px;
+    height: 250px;
+}
+
+.post-container:nth-child(even) {
+    animation-name: animatePostRight;
+    animation-duration: 0.89s;
+}
+
+.post-container:nth-child(odd) {
+    animation-name: animatePostLeft;
+    animation-duration: 0.89s;
+}
+
+@keyframes animatePostRight {
+    0% {
+        transform: translateY(35%);
+    }
+    100% {
+        transform: translateY(0%);
+    }
+}
+
+@keyframes animatePostLeft {
+    0% {
+        transform: translateY(-35%);
+    }
+    100% {
+        transform: translateY(0%);
+    }
+}

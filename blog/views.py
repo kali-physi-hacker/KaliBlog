@@ -10,16 +10,27 @@ from .forms import EmailPostForm, CommentPostForm, PostCategoryForm, PostForm
 # TODO: Refactor project and place view functions into different files to encourage project scaling 
 
 def index(request):
+    """
+    Returns the homepage html
+    :param request: -   Request object
+    """
     template = "index.html"
-    categories = PostCategory.approved.all()
+    # categories = PostCategory.approved.all()
+    posts = Post.objects.all().order_by('-views')
+    if len(posts) >= 2:
+        featured_posts = posts[:2]
+    else:
+        featured_posts = None
     context = {
-        'categories': categories
+        # 'categories': categories,
+        'home_active': 'active',
+        "posts": featured_posts
     }
     return render(request, template, context)
 
 
 def posts_page(request, slug):
-    template = "blog/post/list.html"
+    template = "blog/posts/explore.html"
     object_list = Post.objects.filter(category__slug=slug)
     paginator = Paginator(object_list, 6)
     page = request.GET.get('page')
@@ -32,7 +43,8 @@ def posts_page(request, slug):
 
     context = {
         "posts": posts,
-        "page": page
+        "page": page,
+        "explore_active": "active"
     }
     return render(request, template, context)
 
@@ -66,11 +78,12 @@ def post_list(request):
     except EmptyPage:
         # If page is out of range deliver last page of results
         posts = paginator.page(paginator.num_pages)
-    template = "blog/post/list.html"
+    template = "blog/posts/explore.html"
     # import pdb; pdb.set_trace()
     context = {
         "posts": posts,
-        "page": page
+        "page": page,
+        "explore_active": "active"
     }
     return render(request, template, context)
 
@@ -85,8 +98,10 @@ def post_add(request):
         if form.is_valid():
             instance = form.save()
             return redirect(instance.get_absolute_url())
-    template = "blog/post/add.html"
+    template = "blog/posts/new_post.html"
+    
     form = PostForm()
+    # import pdb; pdb.set_trace()
 
     categories = PostCategory.approved.all()
     context = {
@@ -96,7 +111,7 @@ def post_add(request):
     return render(request, template, context)
 
 
-def post_detail(request, year, month, day, post):
+def post_detail(request, year, month, day, slug):
     """
     This function based view gets a particular post with the parameters below
     :param request:
@@ -106,13 +121,13 @@ def post_detail(request, year, month, day, post):
     :param post:
     :return:
     """
-    template = "blog/post/detail.html"
+    template = "blog/posts/post.html"
     post = get_object_or_404(
-        Post, slug=post,
+        Post, slug=slug,
         status='published',
-        publish__year=year,
-        publish__month=month,
-        publish__day=day
+        published_date__year=year,
+        published_date__month=month,
+        published_date__day=day
     )
 
     # List of active comments for this post
