@@ -2,21 +2,60 @@
 {% load static %}
 
 {% block custom_style_link %}
-    {{ form.meta }}
+<script type="text/javascript" src="{% static 'js/tinymce/tinymce.min.js' %}" ></script>
+<script type="text/javascript">
+    tinymce.init({
+        selector: "#{{ form.body.id_for_label | safe }}"
+    })
+</script>
+
+<style>
+    header {
+        margin-bottom: 4rem;
+    }
+
+    .title {
+        border-top: none;
+        border-left: none;
+        border-right: none;
+        border-radius: 0;
+        border-bottom-width: 2px;
+        font-size: 1.2rem;
+    }
+
+    .title:focus {
+        outline: none;
+        box-shadow: none;
+        border-color: #ced4da;
+    }
+
+    .image::-webkit-file-upload-button {
+        color: red!important;
+    }
+</style>
 {% endblock %}
 
 
 {% block start_container %}
-    <form method="POST" action="#">
-        {% csrf_token %}
-        {{ form.body }}
-    </form>
+    <main class="container form-container">
+        <form method="POST" action="#">
+            {% csrf_token %}
+            <input class="image" type="file" name="{{ form.image.name }}" id="{{ form.image.id_for_label }}">
+            <input type="hidden" name="{{ form.author.name }}" id="{{ form.author.id_for_label }}"
+                value="{{ user.pk }}">
+            <input type="text" name="{{ form.title.name }}" id="{{ form.title.id_for_label }}"
+                 class="form-control title mb-5" placeholder="Story Title" autocomplete="off" required>
+            <textarea name="{{ form.body.name }}" id="{{ form.body.id_for_label }}" 
+                rows="30" autocomplete="off" required></textarea>
+            <button class="btn btn-primary mt-3">Publish</button>
+        </form>
+    </main>
 
 {% endblock start_container %}
  
-
+<!-- 
 {% block end_container %}
 
-    <script type="text/javascript" src="{% static 'js/tinymce/tinymce.min.js' %}" ></script>
+    
 
-{% endblock end_container %}
+{% endblock end_container %} -->
