@@ -1,10 +1,20 @@
-![Home page](project-images/home.png)
+![Home page](project-images/screenshot-landing-page01.png)
+![Home page](project-images/screenshot-landing-page02.png)
+![Home page](project-images/screenshot-landing-page03.png)
 
-![All posts page](project-images/all_posts.png)
+![Explore page](project-images/screenshot-explore-page.png)
+![Detail Post](project-images/screenshot-detail-post.png)
+
+![Login page](project-images/screenshot-login.png)
+![Sign up](project-images/screenshot-signup.png)
+
+![My Stories page](project-images/screenshot-my-stories.png)
+![My New Stories](project-images/screenshot-new-story.png)
+
 <h3 align="center">Kali Blog</h3>
 
 <p align="center">
-    This is a simple Blog build entire with HTML, CSS and Javascript as the
+    This is a simple Blog build entirely with HTML, CSS and Javascript as the
     frontend and Python (Django) as the backend
 </p>
 
@@ -37,6 +47,7 @@ either than the few listed below.
 - Python 3.8 and above
 - Django 2.2 and above
 - Djangorestframework 2 and above
+- Django-taggit
 
 ##### Note:
 The specific versions of the dependencies are located in the requirements.txt file

@@ -10,9 +10,9 @@ body {
 
 /* Customizing the Carousel
 ------------------------------------------ */
-.carousel {
-    margin-bottom: 4rem;
-}
+/*.carousel {*/
+/*    margin-bottom: 4rem;*/
+/*}*/
 
 .carousel-caption {
     bottom: 3rem;
@@ -56,4 +56,18 @@ body {
     background-repeat: no-repeat;
     width: 200px;
     height: 250px;
+}
+
+.features-icons {
+    padding-top: 7rem;
+    padding-bottom: 7rem;
+}
+
+.features-icons-item{
+    font-size: 5rem;
+}
+
+.showcase-img {
+    min-height: 30rem;
+    background-size: cover;
 }
