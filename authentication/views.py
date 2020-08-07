@@ -12,13 +12,17 @@ def login(request):
     if request.method == "POST":
         form = UserLoginForm(request.POST)
         if form.is_valid():
-            username = form.cleaned_data.get("username")
+            username = form.cleaned_data.get("username").lower()
             password = form.cleaned_data.get("password")
 
             user = authenticate(username=username, password=password)
             if user:    
                 login_method(request, user)
-                return redirect(reverse("home"))
+                next_url = request.GET.get("next")
+                if next_url:
+                    return redirect(next_url)
+                else:
+                    return redirect(reverse("home"))
             else:
                 messages.error(request, "Invalid Username or Password")
                 return redirect(reverse("authentication:login"))
@@ -36,16 +40,16 @@ def logout(request):
     return redirect(reverse("home"))
 
 
-    # 024266496
-
-
 def signup(request):
     if request.method == "POST":
         form = UserRegistrationForm(request.POST)
         if form.is_valid():
-            form.save()
+            user = form.save(commit=False)
+            user.set_password(form.cleaned_data["password1"])
+            user.save()
             return redirect(reverse("home"))
         else:
+            import pdb; pdb.set_trace()
             messages.error(request, form.errors)
             
     template = "authentication/signup.html"

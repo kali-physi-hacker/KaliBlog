@@ -1,0 +1,136 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block custom_style_link %}
+<script type="text/javascript" src="{% static 'js/tinymce/tinymce.min.js' %}" ></script>
+<script type="text/javascript">
+    tinymce.init({
+        selector: "#{{ form.body.id_for_label | safe }}",
+        toolbar: false,
+        menubar: false,
+        plugins: "autoresize quickbars image media table hr",
+        quickbars_selection_toolar: "bold italic link | h1 h2 | blockquote",
+        quickbars_insert_toolbar: "image media table hr",
+    //     // skin: "snow",
+        placeholder: "Share your story...",
+        content_style: "@import url('https://fonts.googleapis.com/css2?family=Tinos&display=swap'); body { font-family: 'Tinos', serif; font-size: 16pt; }",
+        showPreview: true,
+    });
+
+
+</script>
+
+<style>
+    header {
+        margin-bottom: 4rem;
+    }
+
+    .title {
+        border-top: none;
+        border-left: none;
+        border-right: none;
+        border-radius: 0;
+        border-bottom-width: 2px;
+        font-size: 1.2rem;
+    }
+
+    .title:focus {
+        outline: none;
+        box-shadow: none;
+        border-color: #ced4da;
+    }
+
+    .image::-webkit-file-upload-button {
+        color: red!important;
+    }
+
+    input#{{ form.image.id_for_label }} {
+        display: none;  
+    }
+
+    #imagePreview {
+        background-size: cover;
+        background-position: center;
+        background-image: url('{{ post.image.url }}');
+        width: 100%;
+        height: 40vh;
+        /* display: none; */
+    }
+
+    .tox.tox-tinymce {
+        border: none;
+    }
+
+    .tox-statusbar {
+        display: none!important;
+    }
+
+</style>
+{% endblock %}
+
+
+{% block start_container %}
+    <main class="container form-container">
+        <div class="row">
+            <div class="col-md-8 mx-auto">
+                <form class="mb-5" enctype="multipart/form-data" method="POST" action="{% url 'blog:post_edit' post.slug %}">
+                    {% csrf_token %}
+                    <input class="image" value="{{ post.image.url }}" type="file" name="{{ form.image.name }}" id="{{ form.image.id_for_label }}">
+                    <!-- <h2 class="dfree-header mce-content-body" contenteditable="true" style="position: relative;" spellcheck="false">
+                        The latest and greatest from TinyMCE
+                    </h2> -->
+                    <button id="image-upload-btn" href="#" class="btn btn-sm btn-info mb-5">Image +</button>
+                    <div class="mb-3" id="imagePreview"></div>
+                    <!-- <input type="hidden" name="{{ form.author.name }}" id="{{ form.author.id_for_label }}"
+                        value="{{ user.pk }}"> -->
+                    <input value="{{ post.status }}" type="hidden" name="{{ form.status.name }}" id="{{ form.status.id_for_label }}">
+                    <input value="{{ post.title }}" type="text" name="{{ form.title.name }}" id="{{ form.title.id_for_label }}"
+                        class="form-control title mb-3 dfree-header mce-content-body" contenteditable="true" style="position: relative;" spellcheck="false"
+                            placeholder="Story Title" autocomplete="off" required>
+                    <textarea name="{{ form.body.name }}" id="{{ form.body.id_for_label }}" 
+                        rows="30" autocomplete="off" required>{{ post.body }}</textarea>
+                    <div class="d-flex">
+                        <!-- <button id="draft-btn" class="btn btn-sm btn-secondary mr-auto mt-3">Save as draft</button> -->
+                        <button id="update-btn" class="btn btn-sm btn-primary ml-auto mt-3">Update</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </main>
+
+{% endblock start_container %}
+ 
+
+{% block end_container %}
+
+    <script type="text/javascript">
+        const imageInput = document.querySelector("#image-upload-btn");
+        const fileInput = document.querySelector("#{{ form.image.id_for_label | safe }}");
+        const imagePreview = document.querySelector("#imagePreview");
+        const updateBtn = document.querySelector('#update-btn');
+
+        // imagePreview.style.backgroundImage = `url(${fileInput.value})`;
+
+        imageInput.onclick = () => {
+            fileInput.click()
+        }
+        fileInput.onchange = () => {
+            if (fileInput.files && fileInput.files[0]){
+                let reader = new FileReader();
+
+                reader.onload = function (e) {
+                    imagePreview.style.display = "block";
+                    imagePreview.style.backgroundImage = `url('${e.target.result}')`;
+                }
+                reader.readAsDataURL(fileInput.files[0]);
+            }
+        }
+
+        updateBtn.onclick = (e) => {
+            // document.querySelector('#{{ form.status.id_for_label | safe }}').value = "published";
+            document.querySelector('form').submit();
+        }
+        
+    </script>
+
+{% endblock end_container %}

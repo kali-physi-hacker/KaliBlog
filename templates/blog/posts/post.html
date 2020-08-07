@@ -1,62 +1,55 @@
 {% extends 'base.html' %}
 {% load static %}
 
+{% block custom_style_link %}
+    <link rel="stylesheet" href="{% static 'css/explore.css' %}" />
+    <style>
+        .tag {
+            cursor: pointer;
+            font-size: 14px;
+        }
+    </style>
+{% endblock %}
+
 
 {% block start_container %}
 
     <main>
         <div class="container">
             
-            <div class="row">
+            <div class="row mb-5">
               <div class="col-md-8">
                 <img class="mb-3" src="{{ post.image.url }}" height="250" />
                 <h3 class="pb-4 mb-4 font-italic border-bottom">
-                  From the Firehose
+                    {% for tag in post.tags.all %}
+                        <a href="{% url 'blog:post_by_tag' tag.slug %}" class="tag d-inline-block mb-1 bg-warning bg-secondary rounded-pill p-1 text-decoration-none text-dark">
+                            #{{ tag }}
+                        </a>
+                    {% endfor %}
                 </h3>
           
                 <div class="blog-post">
                   <h2 class="blog-post-title">{{ post.title }}</h2>
                   <p class="blog-post-meta">{{ post.published_date|date:'F, j Y' }} by <a href="#">{{ post.author|capfirst }}</a></p>
           
-                  <p>This blog post shows a few different types of content that’s supported and styled with Bootstrap. Basic typography, images, and code are all supported.</p>
                   <hr>
                   <div>
                    {{ post.body | safe }}
                     </div>
-                </div><!-- /.blog-post -->
-          
-                {% comment %} <div class="blog-post">
-                  <h2 class="blog-post-title">Another blog post</h2>
-                  <p class="blog-post-meta">December 23, 2013 by <a href="#">Jacob</a></p>
-          
-                  <p>Cum sociis natoque penatibus et magnis <a href="#">dis parturient montes</a>, nascetur ridiculus mus. Aenean eu leo quam. Pellentesque ornare sem lacinia quam venenatis vestibulum. Sed posuere consectetur est at lobortis. Cras mattis consectetur purus sit amet fermentum.</p>
-                  <blockquote>
-                    <p>Curabitur blandit tempus porttitor. <strong>Nullam quis risus eget urna mollis</strong> ornare vel eu leo. Nullam id dolor id nibh ultricies vehicula ut id elit.</p>
-                  </blockquote>
-                  <p>Etiam porta <em>sem malesuada magna</em> mollis euismod. Cras mattis consectetur purus sit amet fermentum. Aenean lacinia bibendum nulla sed consectetur.</p>
-                  <p>Vivamus sagittis lacus vel augue laoreet rutrum faucibus dolor auctor. Duis mollis, est non commodo luctus, nisi erat porttitor ligula, eget lacinia odio sem nec elit. Morbi leo risus, porta ac consectetur ac, vestibulum at eros.</p>
-                </div><!-- /.blog-post -->
-          
-                <div class="blog-post">
-                  <h2 class="blog-post-title">New feature</h2>
-                  <p class="blog-post-meta">December 14, 2013 by <a href="#">Chris</a></p>
-          
-                  <p>Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Aenean lacinia bibendum nulla sed consectetur. Etiam porta sem malesuada magna mollis euismod. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus.</p>
-                  <ul>
-                    <li>Praesent commodo cursus magna, vel scelerisque nisl consectetur et.</li>
-                    <li>Donec id elit non mi porta gravida at eget metus.</li>
-                    <li>Nulla vitae elit libero, a pharetra augue.</li>
-                  </ul>
-                  <p>Etiam porta <em>sem malesuada magna</em> mollis euismod. Cras mattis consectetur purus sit amet fermentum. Aenean lacinia bibendum nulla sed consectetur.</p>
-                  <p>Donec ullamcorper nulla non metus auctor fringilla. Nulla vitae elit libero, a pharetra augue.</p> {% endcomment %}
-                {% comment %} </div><!-- /.blog-post --> {% endcomment %}
-          
+                </div>
+
               </div>
           
               <aside class="col-md-4">
                 <div class="p-4 mb-3 bg-light rounded">
-                  <h4 class="font-italic">About</h4>
-                  <p class="mb-0">Etiam porta <em>sem malesuada magna</em> mollis euismod. Cras mattis consectetur purus sit amet fermentum. Aenean lacinia bibendum nulla sed consectetur.</p>
+                  <h4 class="font-italic">About Author</h4>
+                  <p class="mb-0">
+                      {% if request.user.profile.about %}
+                          {{ request.user.profile.about }}
+                      {% else %}
+                          No About
+                      {% endif %}
+                  </p>
                 </div>
           
                 <div class="p-4">
@@ -78,7 +71,7 @@
                 </div>
           
                 <div class="p-4">
-                  <h4 class="font-italic">Elsewhere</h4>
+                  <h4 class="font-italic">Follow Author</h4>
                   <ol class="list-unstyled">
                     <li><a href="#">GitHub</a></li>
                     <li><a href="#">Twitter</a></li>
@@ -88,7 +81,40 @@
               </aside>
           
             </div>
+            <hr/>
+            <div class="container">
+                <h3>Related Posts</h3>
+                <div style="overflow-x: scroll; -ms-overflow-style: none;" ::-webkit-scrollbar="display: none" class="row">
+                    {% for related_post in related_posts %}
+                        <div style="height: 150px; overflow-y: hidden;" class="col-md-4 post-container mb-3">
+                            <div class="row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
+                                <div class="col p-4 pl-2 pt-2 d-flex flex-column position-static">
+                                    <strong class="d-inline-block mb-2 text-primary">
+                                        {% for tag in related_post.tags.all|slice:":1" %}
+                                            #{{ tag }}
+                                        {% endfor %}
+                                    </strong>
+                                    <h6 class="mb-0 font-weight-bold">{{ related_post.title }}</h6>
+{#                                    <div style="font-size: small" class="mb-1 text-muted">{{ post.published_date }}</div>#}
+                                    <div class="card-text mb-auto">
+                                        {{ post.body | truncatechars:70 | safe }}
+                                    </div>
+{#                                    <a style="font-size: small" href="{{ related_post.get_absolute_url }}" class="stretched-link">Continue reading</a>#}
+                                </div>
+                                <div class="col-md-auto d-none d-lg-block">
+                                    <div height="150px" class="post-image" img_src="{{ related_post.image.url }}"></div>
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+            <hr/>
         </div>
     </main>
 
 {% endblock start_container %}
+
+{% block end_container %}
+    <script type="text/javascript" src="{% static 'js/explore.js' %}"></script>
+{% endblock end_container %}

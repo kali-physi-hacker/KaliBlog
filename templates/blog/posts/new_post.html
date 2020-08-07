@@ -5,8 +5,69 @@
 <script type="text/javascript" src="{% static 'js/tinymce/tinymce.min.js' %}" ></script>
 <script type="text/javascript">
     tinymce.init({
-        selector: "#{{ form.body.id_for_label | safe }}"
-    })
+        selector: "#{{ form.body.id_for_label | safe }}",
+        toolbar: false,
+        menubar: false,
+        plugins: "autoresize quickbars image media table hr",
+        quickbars_selection_toolar: "bold italic link | h1 h2 | blockquote",
+        quickbars_insert_toolbar: "image media table hr",
+    //     // skin: "snow",
+        placeholder: "Share your story...",
+        content_style: "@import url('https://fonts.googleapis.com/css2?family=Tinos&display=swap'); body { font-family: 'Tinos', serif; font-size: 16pt; }",
+        showPreview: true,
+    //     // icons: "thin",
+    //     // skin: "bootstrap",
+    //     // plugins: "lists, link, image, media",
+    //     // toolbar: "h1 h2 bold italics strikethrough blockquote bullist numlist backcolor | link image media",
+    //     setup: function(editor) {
+    //         editor.onsubmit = function(e){
+    //             alert("Okay")
+    //             editor.save();
+    //         };
+    //     }
+    }); 
+
+// var dfreeHeaderConfig = {
+//   selector: '.dfree-header',
+//   menubar: false,
+//   inline: true,
+//   toolbar: false,
+//   plugins: [ 'quickbars' ],
+//   quickbars_insert_toolbar: 'undo redo',
+//   quickbars_selection_toolbar: 'italic underline',
+//   content_css: '//www.tiny.cloud/css/codepen.min.css'
+// };
+
+// var dfreeBodyConfig = {
+//   selector: '.dfree-body',
+//   menubar: false,
+//   inline: true,
+//   plugins: [
+//     'autolink',
+//     'codesample',
+//     'link',
+//     'lists',
+//     'media',
+//     'powerpaste',
+//     'table',
+//     'image',
+//     'quickbars',
+//     'codesample',
+//     'help'
+//   ],
+//   toolbar: false,
+//   quickbars_insert_toolbar: 'quicktable image media codesample',
+//   quickbars_selection_toolbar: 'bold italic underline | formatselect | blockquote quicklink',
+//   contextmenu: 'undo redo | inserttable | cell row column deletetable | help',
+//   powerpaste_word_import: 'clean',
+//   powerpaste_html_import: 'clean',
+//   content_css: '//www.tiny.cloud/css/codepen.min.css'
+// };
+
+// tinymce.init(dfreeHeaderConfig);
+// tinymce.init(dfreeBodyConfig);
+
+
 </script>
 
 <style>
@@ -14,7 +75,7 @@
         margin-bottom: 4rem;
     }
 
-    .title {
+    .title, #id_tags {
         border-top: none;
         border-left: none;
         border-right: none;
@@ -23,7 +84,7 @@
         font-size: 1.2rem;
     }
 
-    .title:focus {
+    .title:focus, #id_tags {
         outline: none;
         box-shadow: none;
         border-color: #ced4da;
@@ -32,30 +93,143 @@
     .image::-webkit-file-upload-button {
         color: red!important;
     }
+
+    input#{{ form.image.id_for_label }} {
+        display: none;  
+    }
+
+    #imagePreview {
+        background-size: cover;
+        background-position: center;
+        width: 100%;
+        height: 40vh;
+        display: none;
+    }
+
+    .tox.tox-tinymce {
+        border: none;
+    }
+
+    .tox-statusbar {
+        display: none!important;
+    }
+
+    #tags span {
+        cursor: pointer;
+    }
 </style>
 {% endblock %}
 
 
 {% block start_container %}
     <main class="container form-container">
-        <form method="POST" action="#">
-            {% csrf_token %}
-            <input class="image" type="file" name="{{ form.image.name }}" id="{{ form.image.id_for_label }}">
-            <input type="hidden" name="{{ form.author.name }}" id="{{ form.author.id_for_label }}"
-                value="{{ user.pk }}">
-            <input type="text" name="{{ form.title.name }}" id="{{ form.title.id_for_label }}"
-                 class="form-control title mb-5" placeholder="Story Title" autocomplete="off" required>
-            <textarea name="{{ form.body.name }}" id="{{ form.body.id_for_label }}" 
-                rows="30" autocomplete="off" required></textarea>
-            <button class="btn btn-primary mt-3">Publish</button>
-        </form>
+        <div class="row">
+            <div class="col-md-8 mx-auto">
+                <form class="mb-5" enctype="multipart/form-data" method="POST" action="{% url 'blog:post_add' %}">
+                    {% csrf_token %}
+                    <input class="image" type="file" name="{{ form.image.name }}" id="{{ form.image.id_for_label }}">
+                    <!-- <h2 class="dfree-header mce-content-body" contenteditable="true" style="position: relative;" spellcheck="false">
+                        The latest and greatest from TinyMCE
+                    </h2> -->
+                    <button id="image-upload-btn" href="#" class="btn btn-sm btn-info">Image +</button>
+                    <p id="image-error" style="font-size: 12px; visibility: hidden;" class="text-danger mb-5">* No image selected</p>
+                    <div id="tags"></div>
+                    <input list="tagValues" autocomplete="off" class="form-control mb-3" placeholder="Tags... (Separate tags by comma ',' Eg. tag1, tag2)"
+                           type="text" name="tags" id="id_tags">
+                    <datalist id="tagValues">
+                        {% for tag in tags %}
+                            <option value="{{ tag }}" />
+                        {% endfor %}
+                    </datalist>
+                    <div class="mb-3" id="imagePreview"></div>
+                    <!-- <input type="hidden" name="{{ form.author.name }}" id="{{ form.author.id_for_label }}"
+                        value="{{ user.pk }}"> -->
+                    <input type="hidden" name="{{ form.status.name }}" id="{{ form.status.id_for_label }}">
+                    <input type="text" name="{{ form.title.name }}" id="{{ form.title.id_for_label }}"
+                        class="form-control title mb-3 dfree-header mce-content-body" contenteditable="true" style="position: relative;" spellcheck="false"
+                            placeholder="Story Title" autocomplete="off" required>
+                    <textarea name="{{ form.body.name }}" id="{{ form.body.id_for_label }}" 
+                        rows="30" autocomplete="off" required></textarea>
+                    <div class="d-flex">
+                        <input id="actionInput" type="hidden" name="action">
+                        <button type="button" id="draft-btn" class="btn btn-sm btn-secondary mr-auto mt-3">Save as draft</button>
+                        <button id="publish-btn" class="btn btn-sm btn-primary mt-3">Publish</button>
+                    </div>
+                </form>
+            </div>
+        </div>
     </main>
 
 {% endblock start_container %}
  
-<!-- 
+
 {% block end_container %}
 
-    
+    <script type="text/javascript">
+        const imageInput = document.querySelector("#image-upload-btn");
+        const fileInput = document.querySelector("#{{ form.image.id_for_label | safe }}");
+        const imagePreview = document.querySelector("#imagePreview");
+        const publishBtn = document.querySelector('#publish-btn');
+        const draftBtn = document.querySelector("#draft-btn");
 
-{% endblock end_container %} -->
+        const tagsDiv = document.querySelector("#tags");
+        const tagInput = document.querySelector("#id_tags");
+        const tagElem = document.querySelector("div#tags span");
+
+        tags = ""
+
+        tagInput.oninput = () => {
+            let tag = tagInput.value;
+            if (tag[tag.length-1] == ',') {
+                let tagElement = document.createElement("span");
+                tagElement.innerText += tag.substring(0, tag.length-1);
+                tagElement.classList.add("bg-primary", "text-light", "p-1", "rounded-lg", "mr-2");
+                tagElement.setAttribute("title", "Click to remove")
+                tagInput.value = "";
+                tagsDiv.appendChild(tagElement)
+                tagElement.onclick = removeTag;
+                tags += `${tag.substring(0, tag.length - 1)},`;
+            }
+        }
+
+        const removeTag = (e) => {
+            tagsDiv.removeChild(e.target);
+            tags.replace(e.target.innerText);
+        }
+
+        imageInput.onclick = () => {
+            fileInput.click()
+        }
+        fileInput.onchange = () => {
+            if (fileInput.files && fileInput.files[0]){
+                let reader = new FileReader();
+
+                reader.onload = function (e) {
+                    imagePreview.style.display = "block";
+                    imagePreview.style.backgroundImage = `url('${e.target.result}')`;
+                }
+                reader.readAsDataURL(fileInput.files[0]);
+            }
+        }
+
+        publishBtn.onclick = (e) => {
+            if (fileInput.value == "") {
+                document.querySelector("#image-error").style.visibility = "visible";
+            }else {
+                document.querySelector('#{{ form.status.id_for_label | safe }}').value = "published";
+                document.querySelector('#actionInput').value = "published";
+                tagInput.value = tags;
+                document.querySelector('form').submit();
+            }
+        }
+
+        draftBtn.onclick = (e) => {
+            document.querySelector('#{{ form.status.id_for_label | safe }}').value = "draft";
+            document.querySelector('#actionInput').value = "draft";
+            tagInput.value = tags;
+            document.querySelector('form').submit();
+        }
+        
+    </script>
+
+{% endblock end_container %}

@@ -1,10 +1,11 @@
 from django.urls import path
 
-from .views import (
-    post_list, post_detail, post_add,
-    # post_list, post_detail, posts_page, post_share,
-    # add_category, post_add,
+from .views.blog import (
+    post_list, post_detail, post_add, edit_post, my_stories,
+    post_by_tag, delete_post,
 )
+
+from .views import errors
 
 
 app_name = 'blog'
@@ -13,10 +14,11 @@ urlpatterns = [
     path('all/', post_list, name="post_list"),
     path('<int:year>/<int:month>/<int:day>/<slug:slug>/', post_detail, name="post_detail"),
     path('post/new/', post_add, name="post_add"),
-    # path('category/add/', add_category, name="add_post_category"),
-    # path('category/<slug:slug>/', posts_page, name="category"),
-    # path('add/', post_add, name="add_post"),
-    # path('all/', post_list, name="all_posts"),
-    # path('<int:year>/<int:month>/<int:day>/<slug:post>/', post_detail, name="post_detail"),
-    # path('<int:year>/<int:month>/<int:day>/<slug:post>/', post_share, name="post_share"),
+    path('post/<slug:slug>/edit/', edit_post, name="post_edit"),
+    path('post/delete/<int:year>/<int:month>/<int:day>/<slug:slug>/', delete_post, name="post_delete"),
+    path('post/my_stories/', my_stories, name="my_stories"),
+    path('all/tags/<slug:slug>/', post_by_tag, name="post_by_tag"),
 ]
+
+#  Error views
+handler404 = errors.handler404

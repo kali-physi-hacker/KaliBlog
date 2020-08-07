@@ -1,8 +1,6 @@
 {% extends 'base.html' %}
 {% load static %}
 
-{% comment %} {% block body_class %}bg-primary d-flex h-100 text-center text-white bg-dark{% endblock %} {% endcomment %}
-
 {% block custom_style_link %} 
     <link rel="stylesheet" href="{% static 'css/carousel.css' %}" /> 
 {% endblock %}
@@ -17,11 +15,7 @@
     </ol>
     <div class="carousel-inner">
         <div class="carousel-item active">
-            {% comment %} <svg class="bd-placeholder-img" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg" 
-                preserveAspectRatio="xMidYMid slice" role="img" focusable="false"><rect width="100%" 
-                    height="100%" fill="#777"/></svg> {% endcomment %}
             <div class="carousel-bg-image" img_src="{% static 'images/write4.jpg' %}"></div>
-            {% comment %} <img src="{% static 'images/write4.jpg' %}" /> {% endcomment %}
             <div class="container">
                 <div class="carousel-caption text-left">
                     <h1>What's on your mind</h1>
@@ -29,15 +23,11 @@
                         Express your thoughts through writing of stories. Share your experience, knowledge and awesome ideas
                         to people out there. Remember, you learn more by sharing and teaching more.
                     </p>
-                    <p><a href="#" role="button" class="btn btn-lg btn-primary">Learn more</a></p>
+                    <p><a href="{% url 'blog:post_add' %}" role="button" class="btn btn-lg btn-primary">Learn more</a></p>
                 </div>
             </div>
         </div>
         <div class="carousel-item">
-            {% comment %} <svg class="bd-placeholder-img" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg" 
-                preserveAspectRatio="xMidYMid slice" role="img" focusable="false"><rect width="100%" 
-                    height="100%" fill="#777"/></svg> {% endcomment %}
-            {% comment %} <img src="{% static 'images/read.jpg' %}" alt="Cover Image" height="100%" width="100%" /> {% endcomment %}
             <div class="carousel-bg-image" img_src="{% static 'images/read.jpg' %}"></div>
             <div class="container">
                 <div class="carousel-caption">
@@ -52,10 +42,6 @@
             </div>
         </div>
         <div class="carousel-item">
-            {% comment %} <svg class="bd-placeholder-img" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg" 
-                preserveAspectRatio="xMidYMid slice" role="img" focusable="false"><rect width="100%" 
-                    height="100%" fill="#777"/></svg> {% endcomment %}
-            {% comment %} <img src="{% static 'images/join2.jpg' %}" alt="Cover Image" height="100%" width="100%" /> {% endcomment %}
             <div class="carousel-bg-image" img_src="{% static 'images/join2.jpg' %}"></div>
             <div class="container">
                 <div class="carousel-caption text-right">
@@ -78,46 +64,41 @@
         <span class="sr-only">Next</span>
     </a>
 </div>
-
+</div>
 {% endblock %}
 
 {% block start_container %}
     <main>
+        <div class="container mb-5">
+            <div class="d-flex mx-auto">
+                {% for tag in tags %}
+                    <a href="{% url 'blog:post_by_tag' tag.slug %}" class="bg-primary text-light p-1 rounded-lg mr-2 text-decoration-none">#{{ tag }}</a>
+                {% endfor %}
+            </div>
+        </div>
         <div id="featured-post" class="container">
             <div class="row mb-2">
                 {% for post in posts %}
                 <div class="col-md-6">
                   <div class="row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
                     <div class="col p-4 d-flex flex-column position-static">
-                      <strong class="d-inline-block mb-2 text-primary">World</strong>
+                        <div class="d-flex">
+                            {% for tag in post.tags.all|slice:':2' %}
+                                <strong class="d-inline-block mb-2 mr-1 text-primary">#{{ tag }} </strong>
+                            {% endfor %}
+                        </div>
+{#                      <strong class="d-inline-block mb-2 text-primary">World</strong>#}
                       <h3 class="mb-0">{{ post.title }}</h3>
                       <div class="mb-1 text-muted">{{ post.published_date }}</div>
-                      <p class="card-text mb-auto">{{ post.body | truncatechars:70 }}</p>
+                      <p class="card-text mb-auto">{{ post.body | truncatechars:70 | safe}}</p>
                       <a href="{{ post.get_absolute_url }}" class="stretched-link">Continue reading</a>
                     </div>
                     <div class="col-auto d-none d-lg-block">
-                      {% comment %} <svg class="bd-placeholder-img" width="200" height="250" xmlns="http://www.w3.org/2000/svg" aria-label="Placeholder: Thumbnail" preserveAspectRatio="xMidYMid slice" role="img" focusable="false"><title>Placeholder</title><rect width="100%" height="100%" fill="#55595c"/><text x="50%" y="50%" fill="#eceeef" dy=".3em">Thumbnail</text></svg> {% endcomment %}
-                        {% comment %} <img src="{{ post.image.url }}" alt="Post image" width="200" height="250" /> {% endcomment %}
                         <div class="post-image" img_src="{{ post.image.url }}"></div>
                     </div>
                   </div>
                 </div>
                 {% endfor %}
-                {% comment %} <div class="col-md-6">
-                  <div class="row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
-                    <div class="col p-4 d-flex flex-column position-static">
-                      <strong class="d-inline-block mb-2 text-success">Design</strong>
-                      <h3 class="mb-0">Post title</h3>
-                      <div class="mb-1 text-muted">Nov 11</div>
-                      <p class="mb-auto">This is a wider card with supporting text below as a natural lead-in to additional content.</p>
-                      <a href="#" class="stretched-link">Continue reading</a>
-                    </div>
-                    <div class="col-auto d-none d-lg-block">
-                      <svg class="bd-placeholder-img" width="200" height="250" xmlns="http://www.w3.org/2000/svg" aria-label="Placeholder: Thumbnail" preserveAspectRatio="xMidYMid slice" role="img" focusable="false"><title>Placeholder</title><rect width="100%" height="100%" fill="#55595c"/><text x="50%" y="50%" fill="#eceeef" dy=".3em">Thumbnail</text></svg>
-            
-                    </div>
-                  </div>
-                </div> {% endcomment %}
             </div>
         </div>
         <div class="container">
@@ -234,4 +215,5 @@
 
 {% block end_container %}
     <script type="text/javascript" src="{% static 'js/carousel.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/explore.js' %}"></script>
 {% endblock end_container %}

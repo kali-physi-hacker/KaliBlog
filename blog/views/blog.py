@@ -1,10 +1,13 @@
-from django.shortcuts import render, redirect, get_object_or_404
+from django.shortcuts import render, redirect, get_object_or_404, reverse 
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.views.generic import ListView
 from django.core.mail import send_mail
+from django.contrib.auth.decorators import login_required
 
-from .models import Post, PostCategory
-from .forms import EmailPostForm, CommentPostForm, PostCategoryForm, PostForm
+from taggit.models import Tag
+
+from blog.models import Post, PostCategory
+from blog.forms import EmailPostForm, CommentPostForm, PostCategoryForm, PostForm
 
 
 # TODO: Refactor project and place view functions into different files to encourage project scaling 
@@ -17,6 +20,7 @@ def index(request):
     template = "index.html"
     # categories = PostCategory.approved.all()
     posts = Post.objects.all().order_by('-views')
+    tags = Tag.objects.all()[:9]
     if len(posts) >= 2:
         featured_posts = posts[:2]
     else:
@@ -24,7 +28,32 @@ def index(request):
     context = {
         # 'categories': categories,
         'home_active': 'active',
-        "posts": featured_posts
+        "posts": featured_posts,
+        "tags": tags
+    }
+    return render(request, template, context)
+
+
+@login_required
+def my_stories(request):
+    """
+    Returns stories (post) written by the author(request.user)
+    :params request:
+    """
+    template = "blog/posts/my_stories.html"
+    _my_stories = Post.objects.filter(active=True, author__id=request.user.pk).order_by('-published_date')
+    paginator = Paginator(_my_stories, 6)
+    page = request.GET.get('page')
+    try:
+        posts = paginator.page(page)
+    except PageNotAnInteger:
+        posts = paginator.page(1)
+    except EmptyPage:
+        posts = paginator.page(paginator.num_pages)
+    
+    context = {
+        "posts": posts,
+        "page": page,
     }
     return render(request, template, context)
 
@@ -68,7 +97,7 @@ def post_list(request):
     :return:
     """
     object_list = Post.published.all()
-    paginator = Paginator(object_list, 6)   # 6 post in each page
+    paginator = Paginator(object_list, 4)   # 6 post in each page
     page = request.GET.get('page')
     try:
         posts = paginator.page(page)
@@ -82,33 +111,76 @@ def post_list(request):
     # import pdb; pdb.set_trace()
     context = {
         "posts": posts,
-        "page": page,
         "explore_active": "active"
     }
     return render(request, template, context)
 
 
+def post_by_tag(request, slug):
+    template = "blog/posts/explore.html"
+    tag = get_object_or_404(Tag, slug=slug)
+    posts = Post.objects.filter(tags=tag)
+    context = {
+        'tag': tag,
+        'posts': posts
+    }
+    return render(request, template, context)
+
+
+@login_required
 def post_add(request):
     if request.method == "POST":
         request.POST = request.POST.copy()
         request.POST["author"] = request.user.pk 
-        request.POST["status"] = "published"
+        # request.POST["status"] = "published"
         form = PostForm(request.POST, request.FILES)
         # import pdb; pdb.set_trace()
         if form.is_valid():
             instance = form.save()
-            return redirect(instance.get_absolute_url())
+            # import pdb; pdb.set_trace()
+            if request.POST["action"] == "published":
+                return redirect(instance.get_absolute_url())
+            elif request.POST["action"] == "draft":
+                return redirect(reverse("blog:my_stories"))
     template = "blog/posts/new_post.html"
     
     form = PostForm()
+    tags = Tag.objects.all()
     # import pdb; pdb.set_trace()
 
     categories = PostCategory.approved.all()
     context = {
         "form": form,
-        "categories": categories
+        "categories": categories,
+        "tags": tags
         }
     return render(request, template, context)
+
+
+@login_required
+def edit_post(request, slug):
+    post = get_object_or_404(Post, slug=slug)
+    form = PostForm(Post, instance=post)
+
+    if request.user == post.author:
+
+        if request.method == "POST":
+            request.POST = request.POST.copy()
+            request.POST['author'] = request.user.pk
+            form = PostForm(request.POST, request.FILES, instance=post)
+            if form.is_valid():
+                form.save()
+            else:
+                import pdb; pdb.set_trace()
+
+        template = "blog/posts/edit_post.html"
+        context = {
+            "form": form,
+            "post": post
+        }
+        return render(request, template, context)
+    else:
+        import pdb; pdb.set_trace()
 
 
 def post_detail(request, year, month, day, slug):
@@ -129,6 +201,13 @@ def post_detail(request, year, month, day, slug):
         published_date__month=month,
         published_date__day=day
     )
+    session_key = "viewed story {slug}"
+    if not request.session.get(session_key, False):
+        post.views += 1
+        post.save()
+        request.session[session_key] = True
+        
+    related_posts = post.tags.similar_objects()
 
     # List of active comments for this post
     comments = post.comments.filter(active=True)
@@ -149,12 +228,40 @@ def post_detail(request, year, month, day, slug):
         form = EmailPostForm(request.GET)
         context = {
             "post": post,
+            "related_posts": related_posts,
             "form": form,
             "comment_form": comment_form,
             "new_comment": new_comment,
             "comments": comments
         }
         return render(request, template, context)
+
+
+@login_required
+def delete_post(request, year, month, day, slug):
+    """
+    A view function that deletes a story.
+    It sets story to be inactive rather that deleting
+    :params year:
+    :params month:
+    :params day:
+    :params slug:
+    :return:
+    """
+    post = get_object_or_404(
+        Post,
+        slug=slug,
+        published_date__year=year,
+        published_date__month=month,
+        published_date__day=day
+    )
+    if request.user == post.author:
+        post.active = False
+        post.save()
+        previous_url = request.META.get('HTTP_REFERER')
+        return redirect(previous_url)
+    else:
+        import pdb; pdb.set_trace()
 
 
 def post_share(request, year, month, day, post):

@@ -1,7 +1,18 @@
 {% extends 'base.html' %}
 {% load static %}
 
-{% block custom_style_link %} <link rel="stylesheet" href="{% static 'css/auth.css' %}" /> {% endblock %}
+{% block custom_style_link %}
+    <link rel="stylesheet" href="{% static 'css/auth.css' %}" />
+    <style>
+        label.placeholder {
+            font-size: 14px;
+        }
+
+        p.error-text {
+            margin-right: 1rem;
+        }
+    </style>
+{% endblock %}
 
 
 {% block header %}{% endblock %}
@@ -13,7 +24,7 @@
             {% if message.tags == 'alert-danger' %}
                 <div class="alert {{ message.tags }} text-danger p-1 alert-dismissable" role="alert">
                     <!-- <p> -->
-                        <span>Invalid Username or Password
+                        <span>{{ message }}
                             <!-- <span style="cursor: pointer;" type="span" class="close text-danger" data-dismiss="alert" aria-label="Close">
                                 &times;
                             </span> -->
@@ -27,33 +38,82 @@
         <form action="" method="POST" class="form-signup shadow-lg p-5 rounded">
             {% csrf_token %}
             <h1 class="h3 mb-4 font-weight-bold text-primary text-center">KaliBlog</h1>
-            <div class="row mb-4">
+            <div class="row mb-5">
                 <div class="col">
-                    <label class="placeholder" for="{{ form.first_name.id_for_label }}">First Name</label>
+
                     <input type="text" class="form-control " id="{{ form.first_name.id_for_label }}"
                         name="{{ form.first_name.name }}" autocomplete="off" required />
+                    <label class="placeholder" for="{{ form.first_name.id_for_label }}">First Name</label>
                 </div>
                 <div class="col">
-                    <label class="placeholder" for="{{ form.last_name.id_for_label }}">Last Name</label>
+
                     <input type="text" class="form-control" id="{{ form.last_name.id_for_label }}"
                         name="{{ form.last_name.name }}" autocomplete="off" required />
+                    <label class="placeholder" for="{{ form.last_name.id_for_label }}">Last Name</label>
                 </div>
             </div>
             <div class="row mb-5">
                 <div class="col">
-                    <label class="placeholder" for="{{ form.email.id_for_label }}">Email</label>
+
                     <input type="text" class="form-control " id="{{ form.email.id_for_label }}"
                         name="{{ form.email.name }}" autocomplete="off" required />
+                    <label class="placeholder" for="{{ form.email.id_for_label }}">Email</label>
                 </div>
+
+            </div>
+            <div class="row mb-5">
                 <div class="col">
-                    <label class="placeholder" for="{{ form.password.id_for_label }}">Password</label>
-                    <input type="text" class="form-control" id="{{ form.password.id_for_label }}"
-                        name="{{ form.password.name }}" autocomplete="off" required/>
+
+                    <input type="password" class="form-control" id="{{ form.password1.id_for_label }}"
+                        name="{{ form.password1.name }}" autocomplete="off" required/>
+                    <label class="placeholder" for="{{ form.password1.id_for_label }}">Password</label>
+                    <p style="font-size: 12px" class="text-danger error-text">Passwords Does not match</p>
+                </div>
+                    <div class="col">
+
+                    <input type="password" class="form-control" id="{{ form.password2.id_for_label }}"
+                        name="{{ form.password2.name }}" autocomplete="off" required/>
+                    <label class="placeholder" for="{{ form.password2.id_for_label }}">Confirm Password</label>
+                    <p style="font-size: 12px;" class="text-danger error-text">Passwords Does not match</p>
                 </div>
             </div>
 
             <button type="submit" class="btn btn-sm btn-block btn-primary">Sign up</button>
+            <div class="d-flex mt-1">
+                <a class="mx-auto" href="{% url 'authentication:login' %}">Login</a>
+            </div>
         </form>
     </div>
 
 {% endblock start_container %}
+
+{% block end_container %}
+    <script type="text/javascript">
+        const inputs = document.querySelectorAll("input.form-control");
+        for (let i=0; i<inputs.length; i++) {
+            const label = document.querySelector(`#${inputs[i].getAttribute("id")} + .placeholder`)
+            inputs[i].onfocus = () =>{
+                label.style.transform = "translateY(-2.2rem)";
+            }
+            inputs[i].onblur = () => {
+                if (inputs[i].value == "") {
+                    label.style.transform = "translateY(0rem)";
+                }
+            }
+        }
+
+        // Form Password Validation
+        const password1 = document.querySelector("#{{ form.password1.id_for_label }}");
+        const password2 = document.querySelector("#{{ form.password2.id_for_label }}");
+
+        document.querySelector("form").onsubmit = (e) => {
+            if (password1.value != password2.value) {
+                Array.from(document.querySelectorAll(".error-text")).map(input=> {input.style.display = "block"});
+                return false;
+            } else {
+                return true
+            }
+        }
+
+    </script>
+{% endblock %}

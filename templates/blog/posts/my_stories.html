@@ -1,0 +1,77 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block custom_style_link %} <link rel="stylesheet" href="{% static 'css/explore.css' %}" /> {% endblock %}
+
+{% load modulo %}
+
+
+{% block start_container %}
+    <main class="container">
+        {% if posts %}
+            <div class="row mb-2">
+            {% for post in posts %}
+                <div class="col-md-6 post-container">
+                    <div class="row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
+                        <div class="col p-4 d-flex flex-column position-static">
+                            <div class="d-flex">
+                                <strong class="d-inline-block mb-2 text-primary">World</strong>
+                                <div class="ml-auto actions">
+                                    <a class="mr-3 text-secondary" href="{% url 'blog:post_edit' post.slug %}">Edit</a>
+                                    <a data-toggle="modal" data-target="#deletePostModal{{ post.pk }}" class="text-danger" href="#">Delete</a>
+                                </div>
+                            </div>
+                            
+                            <h3 class="mb-0">{{ post.title }}</h3>
+                            <div class="mb-1 text-muted">{{ post.published_date }}</div>
+                            <div class="card-text mb-auto">
+                                {{ post.body | truncatechars:70 | safe }}
+                            </div>
+                            <div class="d-flex">
+                                <a class="mr-auto" href="{{ post.get_absolute_url }}">View Story</a>
+                                <p class="{% if post.status == 'draft' %}bg-dark {% elif post.status == 'published' %}bg-success{% endif %} pr-2 pl-2 text-light rounded shadow d-inline-block">{{ post.status }}</p>
+                            </div>
+                        </div>
+                    <div class="col-auto d-none d-lg-block">
+                        <div class="post-image" img_src="{{ post.image.url }}"></div>
+                    </div>
+                    </div>
+                </div>
+                <div class="modal fade" id="deletePostModal{{ post.pk }}" tabindex="-1" aria-labelledby="deletePostModal{{ post.pk }}Label" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Delete Story</h5>
+                    <button type="button" data-dismiss="modal" aria-label="Close" class="close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    Are you sure you want to delete this <em><strong>"{{ post.title }}"</strong></em> story?
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-outline-secondary" data-dismiss="modal">Close</button>
+                    <a href="{{ post.get_delete_url }}" type="button" class="btn btn-danger">Delete</a>
+                </div>
+            </div>
+        </div>
+    </div>
+            {% ifequal forloop.counter|modulo_two:2 0 %}
+            </div>
+            <div class="row mb-2">
+            {% endifequal %}
+            {% endfor %}
+            </div>
+            {% include 'blog/posts/paginator.html' with page=page %}
+        {% else %}
+            <div class="row mb-2">
+                <p class="text-center">You have written no stories yet</p><hr />
+            </div>
+        {% endif %}
+    </main>
+{% endblock start_container %}
+
+
+{% block end_container %}
+    <script type="text/javascript" src="{% static 'js/explore.js' %}"></script>
+{% endblock end_container %}

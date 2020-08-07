@@ -1,18 +1,27 @@
-{% comment %} <div class="paginator">
-    <span class="step-links">
-        {% if page.has_previous %}
-            <a href="?page={{ page.previous_page_number }}">Previous</a>
-        {% endif %}
-        <span class="current">
-            Page {{ page.number }} of {{ page.paginator.num_pages }}
-        </span>
-        {% if page.has_next %}
-            <a href="?page={{ page.next_page_number }}">Next</a>
-        {% endif %}
-    </span>
-</div> {% endcomment %}
-
-<nav class="blog-pagination mt-3 mb-3 text-center">
-    <a href="?page={{page.previous_page_number}}" class="btn btn-outline-secondary {% if not page.has_previous %}disabled{% endif %}">Older</a>
-    <a href="?page={{page.next_page_number}}" class="btn btn-outline-primary {% if not page.has_next %}disabled{% endif %}" tabindex="-1" aria-disabled="true">Newer</a>
+<div class="row">
+    <div class="col-md-7 mx-auto w-auto">
+        <nav class="blog-pagination mt-3 mb-3 text-center">
+    {% if posts.has_other_pages %}
+        <ul class="pagination text-center">
+            {% if posts.has_previous %}
+                <li><a href="?page={{posts.previous_page_number}}" class="mr-2 btn btn-outline-secondary">Older</a></li>
+            {% else %}
+                <li><a href="#" class="mr-2 btn btn-outline-secondary disabled">Older</a></li>
+            {% endif %}
+            {% for i in posts.paginator.page_range %}
+                {% if posts.number == i %}
+                    <a class="font-weight-bold active btn btn-outline-dark text-light pr-3 pl-3 mr-2 text-light text-decoration-none" href="?page={{ i }}">{{ i }}</a>
+                {% else %}
+                    <a class="font-weight-bold btn btn-outline-dark text-dark text-light pr-3 pl-3 mr-2 text-decoration-none" href="?page={{ i }}">{{ i }}</a>
+                {% endif %}
+            {% endfor %}
+            {% if posts.has_next %}
+                <li><a href="?page={{posts.next_page_number}}" class="btn btn-outline-primary">Newer</a></li>
+            {% else %}
+                <li><a href="#" class="btn btn-outline-secondary disabled">Newer</a></li>
+            {% endif %}
+        </ul>
+    {% endif %}
 </nav>
+    </div>
+</div>

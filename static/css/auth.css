@@ -40,20 +40,24 @@ body, html {
     width: 70%;
 }
 
+.col {
+    position: relative;
+}
+
 .form-signup label {
     /* visibility: hidden; */
+    position: absolute;
     color: #00796b;
     padding-left: 0.846rem;
-    transform: translateY(2rem);
+    top: 0.5rem;
+    transition: transform 0.3s ease-in;
     opacity: 0.5;
 }
 
-.form-signup .form-control:focus > .placeholder {
-    color: red;
+p.error-text {
+    display: none;
 }
 
-/* .form-signup input::placeholder {
-    color: #00796b;
-    opacity: 0.5;
-} */
-
+input.form-control::-webkit-input-placeholder {
+    color: red!important;
+}
