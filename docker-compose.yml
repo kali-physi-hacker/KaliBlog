@@ -1,0 +1,27 @@
+version: '3.7'
+
+services:
+  web:
+    build: .
+    command: python /code/manage.py runserver 0.0.0.0:8000
+    environment:
+      - DJANGO_SETTINGS_MODULE=kaliblog.settings.dev
+    volumes:
+      - .:/code
+    ports:
+      - 8000:8000
+
+  stage:
+    build: .
+    command: python /code/manage.py runserver 0.0.0.0:8001
+    environment:
+      - DJANGO_SETTINGS_MODULE=kaliblog.settings.stage
+    volumes:
+      - .:/code
+    ports:
+      - 8001:8001
+    depends_on:
+      - db
+
+  db:
+    image: postgres
