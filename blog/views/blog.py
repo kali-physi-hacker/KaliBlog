@@ -1,12 +1,14 @@
-from django.shortcuts import render, redirect, get_object_or_404, reverse 
+from django.shortcuts import render, redirect, get_object_or_404, reverse
+from django.http import JsonResponse
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.views.generic import ListView
 from django.core.mail import send_mail
 from django.contrib.auth.decorators import login_required
+from django.views.decorators.csrf import csrf_exempt
 
 from taggit.models import Tag
 
-from blog.models import Post, PostCategory
+from blog.models import Post, PostCategory, Comment
 from blog.forms import EmailPostForm, CommentPostForm, PostCategoryForm, PostForm
 
 
@@ -194,6 +196,7 @@ def post_detail(request, year, month, day, slug):
     :return:
     """
     template = "blog/posts/post.html"
+    form = CommentPostForm(request.GET)
     post = get_object_or_404(
         Post, slug=slug,
         status='published',
@@ -213,28 +216,28 @@ def post_detail(request, year, month, day, slug):
     comments = post.comments.filter(active=True)
 
     new_comment = None
-    if request.method == "POST":
-        request.POST = request.POST.copy()
-        request.POST["name"] = request.user.username
-        request.POST["email"] = request.user.email
-        comment_form = CommentPostForm(request.POST)
-        if comment_form.is_valid():
-            new_comment = comment_form.save(commit=False)
-            new_comment.post = post
-            new_comment.save()
-            return redirect(post.get_absolute_url())
-    else:
-        comment_form = CommentPostForm(request.GET)
-        form = EmailPostForm(request.GET)
-        context = {
-            "post": post,
-            "related_posts": related_posts,
-            "form": form,
-            "comment_form": comment_form,
-            "new_comment": new_comment,
-            "comments": comments
-        }
-        return render(request, template, context)
+    # if request.method == "POST":
+    #     request.POST = request.POST.copy()
+    #     request.POST["name"] = request.user.username
+    #     request.POST["email"] = request.user.email
+    #     comment_form = CommentPostForm(request.POST)
+    #     if comment_form.is_valid():
+    #         new_comment = comment_form.save(commit=False)
+    #         new_comment.post = post
+    #         new_comment.save()
+    #         return redirect(post.get_absolute_url())
+    # else:
+    comment_form = CommentPostForm(request.GET)
+    # form = EmailPostForm(request.GET)
+    context = {
+        "post": post,
+        "related_posts": related_posts,
+        "form": form,
+        "comment_form": comment_form,
+        "new_comment": new_comment,
+        "comments": comments
+    }
+    return render(request, template, context)
 
 
 @login_required
@@ -263,6 +266,35 @@ def delete_post(request, year, month, day, slug):
     else:
         import pdb; pdb.set_trace()
 
+
+@login_required
+@csrf_exempt
+def add_post_comment(request, slug):
+    """
+    A view function that adds a comment to a post
+    :params year:
+    :params month:
+    :params day:
+    :params slug:
+    :return:
+    """
+    if request.method == "POST":
+        post = get_object_or_404(
+            Post,
+            slug=slug
+        )
+        form = CommentPostForm(request.POST)
+        if form.is_valid():
+            comment = form.save(commit=False)
+            comment.post = post
+            comment.author = request.user
+            # import pdb; pdb.set_trace()
+            comment.save()
+            data = dict(form.cleaned_data)
+            return JsonResponse(data,  content_type="application/json")
+        else:
+            import pdb; pdb.set_trace()
+            
 
 def post_share(request, year, month, day, post):
     """
@@ -327,3 +359,17 @@ def add_category(request):
         "form": form
     }
     return render(request, template, context)
+
+
+def subscribe(request):
+    """
+    Add email to the list of subscribers
+    """
+    if request.method == "POST":
+        email = request.POST.get("email")
+        # TODO: Send email here
+        template = "blog/subscribed.html"
+        context = {
+            "email": email
+        }
+        return render(request, context, template)
