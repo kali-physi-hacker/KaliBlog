@@ -32,30 +32,45 @@
         {% block carousel %} {% endblock %}
         <nav class="navbar navbar-expand-md navbar-light bg-light fixed-top shadow">
             <div class="container-fluid">
-                <a href="#" class="navbar-brand font-weight-bold text-dark text-decoration-underline">KaliBlog</a>
+                <a href="{% url 'home' %}" class="navbar-brand font-weight-bold text-dark text-decoration-underline">KaliBlog</a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#mainNavigation" aria-label="Main Page Navigation" aria-controls="mainNavigation" aria-expanded="false">
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="collapse navbar-collapse" id="mainNavigation">
                     <ul class="navbar-nav ml-5 mr-auto mb-2 mb-md-0">
-                        <li class="nav-item {{ home_active }}"><a href="/" class="nav-link">Home</a></li>
-                        <li class="nav-item {{ explore_active }}"><a href="{% url 'blog:post_list' %}" class="nav-link">Explore</a></li>
-                        <li class="nav-item {{ subscribe_active }}"><a href="#" class="nav-link">Subscribe</a></li>
+                        <li class="nav-item {{ home_active }}"><a href="/" class="nav-link">Home <i class="icon-home"></i> </a></li>
+                        <li class="nav-item {{ explore_active }}"><a href="{% url 'blog:post_list' %}" class="nav-link">Explore <i class="icon-notebook"></i> </a></li>
+                        <li class="nav-item {{ subscribe_active }}">
+                            <div class="dropdown">
+                                <a id="subscribe-btn" data-toggle="dropdown" aria-expanded="false" role="button" href="#" class="nav-link">Subscribe <i class="icon-feed"></i> </a>
+                                <div class="dropdown-menu bg-info">
+                                    <form method="POST" action="#" style="min-width: 26rem" class="px-4 py-3 row g-3">
+                                        <div class="col-auto">
+                                            <input type="email" class="form-control" placeholder="Enter your email...">
+                                        </div>
+                                      <div class="col-auto">
+                                        <button type="submit" class="btn btn btn-primary">Subscribe!</button>
+                                      </div>
+                                  </form>
+                                </div>
+                            </div>
+                        </li>
                         <li class="nav-item {{ about_us_active }}"><a href="#" class="nav-link">About Us</a></li>
                     </ul>
                     <div class="d-flex mr-5">
                         {% if not user.is_authenticated %}
-                            <a href="{% url 'authentication:login' %}" class="btn btn-sm btn-primary">Login</a>
+                            <a href="{% url 'authentication:login' %}" class="btn btn-sm btn-primary">Login <i class="ml-1 icon-key"></i> </a>
                         {% else %}
                             <div class="dropdown mr-5">
                                 <a style="text-decoration: none" href="#" class="dropdown-toggle text-dark" id="userAuthDropdown" data-toggle="dropdown" aria-expanded="false">
-                                    {{ user.first_name|capfirst }}
+                                    <i class="icon-user"></i>
+{#                                    {{ user.first_name|capfirst }}#}
                                 </a>
                                 <ul class="dropdown-menu" aria-labelledby="userAuthDropdown">
                                     <li><a class="dropdown-item" href="{% url 'blog:my_stories' %}">My Stories</a></li>
-                                    <li><a class="dropdown-item" href="{% url 'blog:post_add' %}">New Story</a></li>
+                                    <li><a class="dropdown-item" href="{% url 'blog:post_add' %}">New Story <i class="icon-pencil ml-1"></i> </a></li>
                                     <div class="dropdown-divider"></div>
-                                    <li><a class="dropdown-item" href="{% url 'authentication:logout' %}">Logout</a></li>
+                                    <li><a class="dropdown-item" href="{% url 'authentication:logout' %}">Logout <i class="ml-1 icon-power"></i> </a></li>
                                 </ul>
                             </div>
                         {% endif %}
