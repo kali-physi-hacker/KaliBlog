@@ -3,6 +3,7 @@ from django.urls import path
 from .views.blog import (
     post_list, post_detail, post_add, edit_post, my_stories,
     post_by_tag, delete_post,
+    add_post_comment,
 )
 
 from .views import errors
@@ -18,6 +19,7 @@ urlpatterns = [
     path('post/delete/<int:year>/<int:month>/<int:day>/<slug:slug>/', delete_post, name="post_delete"),
     path('post/my_stories/', my_stories, name="my_stories"),
     path('all/tags/<slug:slug>/', post_by_tag, name="post_by_tag"),
+    path('post/<slug:slug>/comment/add/', add_post_comment, name="add_post_comment"),
 ]
 
 #  Error views
