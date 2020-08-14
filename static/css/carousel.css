@@ -4,7 +4,7 @@
 
 body {
     padding-top: 3rem;
-    padding-bottom: 3rem;
+    /*padding-bottom: 3rem;*/
     color: #5a5a5a;
 }
 
@@ -70,4 +70,50 @@ body {
 .showcase-img {
     min-height: 30rem;
     background-size: cover;
+    /*border: 0.3rem solid #0c5460;*/
+    /*!*border-radius: 5%;*!*/
+}
+
+.team-container {
+    padding-top: 7rem;
+    padding-bottom: 7rem;
+}
+
+.team-item {
+    max-width: 18rem;
+}
+
+.call-to-action {
+    position: relative;
+    background-image: url("../images/email-bg.jpg");
+    background-size: cover;
+    padding-top: 7rem;
+    padding-bottom: 7rem;
+}
+
+.call-to-action .overlay {
+    position: absolute;
+    background-color: #212529;
+    height: 100%;
+    width: 100%;
+    top: 0;
+    left: 0;
+    opacity: .3;
+}
+
+.form-row{
+    display: flex;
+    flex-wrap: wrap;
+    margin-right: -5px;
+    margin-left: -5px;
+}
+
+.form-row > [class*="col-"] {
+    padding-right: 5px;
+    padding-left: 5px;
+}
+
+footer {
+    padding-top: 4rem;
+    padding-bottom: 4rem;
 }
