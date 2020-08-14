@@ -42,6 +42,6 @@ jobs:
 #      with:
 #        postgresql version: '11'
     - name: Run migrations
-      run: python manage.py migrate
+      run: python manage.py migrate --settings=kaliblog.settings.dev
     - name: Run tests
-      run: python manage.py test
+      run: python manage.py test --settings=kaliblog.settings.dev
