@@ -43,13 +43,13 @@
 
                     <input type="text" class="form-control " id="{{ form.first_name.id_for_label }}"
                         name="{{ form.first_name.name }}" autocomplete="off" required />
-                    <label class="placeholder" for="{{ form.first_name.id_for_label }}">First Name</label>
+                    <label class="placeholder" for="{{ form.first_name.id_for_label }}">First Name <i class="ml-1 icon-user"></i></label>
                 </div>
                 <div class="col">
 
                     <input type="text" class="form-control" id="{{ form.last_name.id_for_label }}"
                         name="{{ form.last_name.name }}" autocomplete="off" required />
-                    <label class="placeholder" for="{{ form.last_name.id_for_label }}">Last Name</label>
+                    <label class="placeholder" for="{{ form.last_name.id_for_label }}">Last Name <i class="ml-1 icon-user"></i></label>
                 </div>
             </div>
             <div class="row mb-5">
@@ -57,7 +57,7 @@
 
                     <input type="text" class="form-control " id="{{ form.email.id_for_label }}"
                         name="{{ form.email.name }}" autocomplete="off" required />
-                    <label class="placeholder" for="{{ form.email.id_for_label }}">Email</label>
+                    <label class="placeholder" for="{{ form.email.id_for_label }}">Email <i class="ml-1 icon-envelope"></i> </label>
                 </div>
 
             </div>
@@ -66,14 +66,14 @@
 
                     <input type="password" class="form-control" id="{{ form.password1.id_for_label }}"
                         name="{{ form.password1.name }}" autocomplete="off" required/>
-                    <label class="placeholder" for="{{ form.password1.id_for_label }}">Password</label>
+                    <label class="placeholder" for="{{ form.password1.id_for_label }}">Password <i class="ml-1 icon-key"></i></label>
                     <p style="font-size: 12px" class="text-danger error-text">Passwords Does not match</p>
                 </div>
                     <div class="col">
 
                     <input type="password" class="form-control" id="{{ form.password2.id_for_label }}"
                         name="{{ form.password2.name }}" autocomplete="off" required/>
-                    <label class="placeholder" for="{{ form.password2.id_for_label }}">Confirm Password</label>
+                    <label class="placeholder" for="{{ form.password2.id_for_label }}">Confirm Password <i class="ml-1 icon-key"></i></label>
                     <p style="font-size: 12px;" class="text-danger error-text">Passwords Does not match</p>
                 </div>
             </div>
