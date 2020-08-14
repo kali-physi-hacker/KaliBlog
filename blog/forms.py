@@ -13,7 +13,7 @@ class EmailPostForm(forms.Form):
 
 class CommentPostForm(forms.ModelForm):
     class Meta:
-        fields = ("name", "email", "body")
+        fields = ("body",)
         model = Comment
 
 
