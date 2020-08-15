@@ -68,7 +68,6 @@ class UserManager(BaseUserManager):
         return user 
 
 
-
 class User(AbstractBaseUser, PermissionsMixin):
     """The Custom User Model
     """
@@ -125,7 +124,6 @@ class User(AbstractBaseUser, PermissionsMixin):
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = ['first_name', 'last_name']
 
-    
     def full_name(self):
         return "{} {}".format(self.first_name, self.last_name)
 
