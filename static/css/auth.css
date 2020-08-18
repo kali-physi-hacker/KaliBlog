@@ -58,6 +58,11 @@ p.error-text {
     display: none;
 }
 
-input.form-control::-webkit-input-placeholder {
-    color: red!important;
+
+input.form-control::placeholder {
+    font-size: 14px!important;
+}
+
+input[type="checkbox"] {
+    
 }

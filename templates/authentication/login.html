@@ -26,7 +26,7 @@
         {% endfor %}
         <form action="" method="POST" class="form-signin shadow-lg p-5 rounded">
             {% csrf_token %}
-            <h1 class="h3 mb-4 font-weight-bold text-primary">KaliBlog</h1>
+            <h1 class="h3 mb-4 font-weight-bold text-primary"><a href="{% url 'home' %}">KaliBlog</a></h1>
             <label for="{{ form.username.id_for_label }}" class="sr-only">Email Address</label>
             <input type="email" class="form-control mb-2" id="{{ form.username.id_for_label }}" 
                 name="{{ form.username.name }}" placeholder="Email Address" required autofocus 
@@ -35,7 +35,7 @@
             <input type="password" class="form-control mb-2" id="{{ form.password.id_for_label }}"
                 name="{{ form.password.name }}" placeholder="Password" required autocomplete="off" />
             <div class="checkbox mb-3">
-                <label>
+                <label class="d-block text-left mt-3">
                     <input type="checkbox" value="remember me"> Remember Me
                 </label>
             </div>

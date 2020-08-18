@@ -37,7 +37,7 @@
         {% endfor %}
         <form action="" method="POST" class="form-signup shadow-lg p-5 rounded">
             {% csrf_token %}
-            <h1 class="h3 mb-4 font-weight-bold text-primary text-center">KaliBlog</h1>
+            <h1 class="h3 mb-4 font-weight-bold text-primary text-center"><a href="{% url 'home' %}">KaliBlog</a></h1>
             <div class="row mb-5">
                 <div class="col">
 
