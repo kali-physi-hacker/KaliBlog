@@ -1,0 +1,30 @@
+# Pull a base image (Python3.8, in this case)
+FROM python:3.8-alpine
+
+# SET ENVIRONMENT VARIABLES
+ENV PYTHONUNBUFFERED 1
+ENV PYTHONDONTWRITEBYTECODE 1
+
+# SET WORKING DIRECTORY
+WORKDIR /code
+
+# install psycopg2 for postgres
+RUN apk update \
+    && apk add --virtual build-deps gcc python3-dev musl-dev \
+    && apk add postgresql-dev \
+    && pip install psycopg2 \
+    && apk del build-deps
+
+# REQUIREMENTS INSTALLATION
+RUN pip install --upgrade pip
+COPY requirements.txt /code/
+RUN pip install -r requirements.txt
+
+# COPY PROJECT
+COPY . /code/
+
+# add and run as non-root user
+USER user
+
+# run gunicorn
+CMD gunicorn kaliblog.wsgi:application --bind 0.0.0.0:$PORT
